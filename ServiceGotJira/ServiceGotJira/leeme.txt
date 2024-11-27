@@ -1,0 +1,28 @@
+//Usuario: jira.emx@gmail.com
+//clave: AtlassiamEMX2018
+
+https://www.youtube.com/watch?v=y64L-3HKuP0
+
+instalar
+ServiceGotJira.exe install 
+\\SRVAZSQL05.softoffice.com.ar\c$\ServiceGotJira\ServiceGotJiraLite.exe install
+New-Service -Name "WinServiceGotJiraLite" -BinaryPathName \\SRVAZSQL05.softoffice.com.ar\c$\ServiceGotJira\ServiceGotJiraLite.exe
+
+iniciar
+start
+
+desinstalar
+ServiceGotJira.exe unistall
+
+eliminar servicio
+SC delete WinServiceGotJira
+
+sc \\srvazsql05.softoffice.com.ar start WinServiceGotJira
+sc \\srvazsql05.softoffice.com.ar stop WinServiceGotJira
+sc \\srvazsql05.softoffice.com.ar query WinServiceGotJira
+
+
+sc \\srvazsql05.softoffice.com.ar start WinServiceGotJiraLite
+sc \\srvazsql05.softoffice.com.ar stop WinServiceGotJiraLite
+sc \\srvazsql05.softoffice.com.ar query WinServiceGotJiraLite
+

@@ -1,0 +1,21 @@
+//Usuario: jira.emx@gmail.com
+//clave: AtlassiamEMX2018
+
+https://www.youtube.com/watch?v=y64L-3HKuP0
+
+instalar
+ServiceGotJira.exe install 
+
+iniciar
+start
+
+desinstalar
+ServiceGotJira.exe unistall
+
+eliminar servicio
+SC delete WinServiceGotJira
+
+sc \\srvazsql05.softoffice.com.ar start WinServiceGotJira
+sc \\srvazsql05.softoffice.com.ar stop WinServiceGotJira
+sc \\srvazsql05.softoffice.com.ar query WinServiceGotJira
+

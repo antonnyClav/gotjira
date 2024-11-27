@@ -1,0 +1,8 @@
+﻿<configuration>
+  <connectionStrings>
+    <SqlConnectionString>Persist Security Info=False;User ID=sa;Password=Emerix01;Initial Catalog=GotJira;Data Source=W10\SQLEXPRESS;</SqlConnectionString>
+	<SqlConnectionStringCloud>Persist Security Info=False;User ID=user_service;Password=340$Uuxwp7Mcxo7K.;Initial Catalog=EMX.AR.GOTJIRA.PROD;Data Source=sqlserver-ar-emerix-gotjira-prod.emerix.net;</SqlConnectionStringCloud>
+    <Pathfiles>G:\GotJira\</Pathfiles>
+	<Db>SqlConnectionString</Db>
+  </connectionStrings>
+</configuration>
