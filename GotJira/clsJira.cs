@@ -3100,7 +3100,7 @@ namespace GotJira
                 IEnumerable<AtlassianGotJiraWorkLogs.AddWorklog> WorkLogs = new List<AtlassianGotJiraWorkLogs.AddWorklog>();
                 if (sync_only_this_user != "")
                     //WorkLogs = response.worklogs.Where(x => (x.author.active == true && x.author.accountId == sync_only_this_user));
-                    WorkLogs = response.worklogs.Where(x => (x.author.accountId == sync_only_this_user)); //el usuario puede estar inactivo pero worklogs me retorna las horas pero jira no me retorna el usuari, paso con betty rivero
+                    WorkLogs = response.worklogs.Where(x => (x.author.accountId == sync_only_this_user)); //el usuario puede estar inactivo pero worklogs me retorna las horas pero jira no me retorna el usuario, paso con betty rivero
                 else
                     //WorkLogs = response.worklogs.Where(x => x.author.active == true);
                     WorkLogs = response.worklogs; ////el usuario puede estar inactivo pero worklogs me retorna las horas pero jira no me retorna el usuari, paso con betty rivero
@@ -3226,7 +3226,7 @@ namespace GotJira
                 IEnumerable<AtlassianGotJiraWorkLogs.AddWorklog> WorkLogs = new List<AtlassianGotJiraWorkLogs.AddWorklog>();
                 if (sync_only_this_user != "")
                     WorkLogs = Root.worklogs.Where(x => (x.author.accountId == sync_only_this_user));
-                    //WorkLogs = Root.worklogs.Where(x => (x.author.active == true && x.author.accountId == sync_only_this_user)); //el usuario puede estar inactivo pero worklogs me retorna las horas pero jira no me retorna el usuari, paso con betty rivero
+                    //WorkLogs = Root.worklogs.Where(x => (x.author.active == true && x.author.accountId == sync_only_this_user)); //el usuario puede estar inactivo pero worklogs me retorna las horas pero jira no me retorna el usuario, paso con betty rivero
                 else
                     WorkLogs = Root.worklogs;
                     //WorkLogs = Root.worklogs.Where(x => x.author.active == true); //el usuario puede estar inactivo pero worklogs me retorna las horas pero jira no me retorna el usuari, paso con betty rivero
