@@ -7,11 +7,15 @@
       "RelativeMoniker": "D:0:0:{8BB5811B-D0AE-44A8-A4A0-B1E49DC804A1}|GotJira\\GotJira.csproj|solutionrelative:gotjira\\clsjira.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A7C0CB1A-3078-4C31-B9A6-94775EA5ABFD}|DBC\\DBC.csproj|c:\\users\\antx\\source\\repos\\webgotjira\\dbc\\clsconfiguracion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{FFBDDAE8-80F3-4DC8-85EB-A86E39297EC4}|DAL\\DAL.csproj|c:\\users\\antx\\source\\repos\\webgotjira\\dal\\mtablasin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FFBDDAE8-80F3-4DC8-85EB-A86E39297EC4}|DAL\\DAL.csproj|solutionrelative:dal\\mtablasin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A7C0CB1A-3078-4C31-B9A6-94775EA5ABFD}|DBC\\DBC.csproj|C:\\Users\\antx\\source\\repos\\WebGotJira\\dbc\\clsconfiguracion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A7C0CB1A-3078-4C31-B9A6-94775EA5ABFD}|DBC\\DBC.csproj|solutionrelative:dbc\\clsconfiguracion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{FFBDDAE8-80F3-4DC8-85EB-A86E39297EC4}|DAL\\DAL.csproj|c:\\users\\antx\\source\\repos\\webgotjira\\dal\\gotjira_model\\bulkinsertminitoc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{FFBDDAE8-80F3-4DC8-85EB-A86E39297EC4}|DAL\\DAL.csproj|C:\\Users\\antx\\source\\repos\\WebGotJira\\dal\\gotjira_model\\bulkinsertminitoc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{FFBDDAE8-80F3-4DC8-85EB-A86E39297EC4}|DAL\\DAL.csproj|solutionrelative:dal\\gotjira_model\\bulkinsertminitoc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -22,8 +26,21 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 6,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MTablasIn.cs",
+              "DocumentMoniker": "C:\\Users\\antx\\source\\repos\\WebGotJira\\DAL\\MTablasIn.cs",
+              "RelativeDocumentMoniker": "DAL\\MTablasIn.cs",
+              "ToolTip": "C:\\Users\\antx\\source\\repos\\WebGotJira\\DAL\\MTablasIn.cs",
+              "RelativeToolTip": "DAL\\MTablasIn.cs",
+              "ViewState": "AgIAABoAAAAAAAAAAAASwDIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-06T14:53:37.276Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
@@ -52,14 +69,14 @@
               "RelativeDocumentMoniker": "GotJira\\clsJira.cs",
               "ToolTip": "C:\\Users\\antx\\source\\repos\\WebGotJira\\GotJira\\clsJira.cs",
               "RelativeToolTip": "GotJira\\clsJira.cs",
-              "ViewState": "AgIAANUMAAAAAAAAAAAmwO0MAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAPgBAAAAAAAAAAAhwA4CAABCAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-12-06T01:43:01.74Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "clsConfiguracion.cs",
               "DocumentMoniker": "C:\\Users\\antx\\source\\repos\\WebGotJira\\DBC\\clsConfiguracion.cs",
               "RelativeDocumentMoniker": "DBC\\clsConfiguracion.cs",
@@ -67,12 +84,11 @@
               "RelativeToolTip": "DBC\\clsConfiguracion.cs",
               "ViewState": "AgIAAAwAAAAAAAAAAAAAACAAAABJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-06T01:43:47.15Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-06T01:43:47.15Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "BulkInsertMinitoc.cs",
               "DocumentMoniker": "C:\\Users\\antx\\source\\repos\\WebGotJira\\DAL\\Gotjira_Model\\BulkInsertMinitoc.cs",
               "RelativeDocumentMoniker": "DAL\\Gotjira_Model\\BulkInsertMinitoc.cs",
@@ -80,8 +96,7 @@
               "RelativeToolTip": "DAL\\Gotjira_Model\\BulkInsertMinitoc.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAowBwAAAAxAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-06T01:42:06.624Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-06T01:42:06.624Z"
             }
           ]
         },

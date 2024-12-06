@@ -16,7 +16,7 @@ namespace DAL
                 {
 
                     SqlCommand cmd = new SqlCommand("gj_precalculo_indicadores_proyecto_planf", cn);
-                    cmd.CommandTimeout = 900;
+                    cmd.CommandTimeout = 1800;
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     cmd.ExecuteNonQuery();
@@ -42,7 +42,7 @@ namespace DAL
                 {
 
                     SqlCommand cmd = new SqlCommand("gj_in_actualiza_rol", cn);
-                    cmd.CommandTimeout = 900;
+                    cmd.CommandTimeout = 1800;
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     cmd.ExecuteNonQuery();

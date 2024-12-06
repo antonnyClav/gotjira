@@ -17,7 +17,7 @@ namespace DAL
                 {
 
                     SqlCommand cmd = new SqlCommand("gj_parametros_ret", cn);
-                    cmd.CommandTimeout = 900;
+                    cmd.CommandTimeout = 1800;
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     cmd.Parameters.AddWithValue("@v_codigo", strCodigo);
@@ -53,7 +53,7 @@ namespace DAL
                 using (SqlConnection cn = con.Conectar())
                 {
                     SqlCommand cmd = new SqlCommand("gj_parametros_upd", cn);
-                    cmd.CommandTimeout = 900;
+                    cmd.CommandTimeout = 1800;
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     cmd.Parameters.AddWithValue("@v_codigo", strCodigo);
@@ -98,7 +98,7 @@ namespace DAL
                 using (SqlConnection cn = con.Conectar())
                 {
                     SqlCommand cmd = new SqlCommand("SELECT SYSDATETIMEOFFSET() AT TIME ZONE 'UTC' AT TIME ZONE 'Argentina Standard Time' as fecha_actual", cn);
-                    cmd.CommandTimeout = 900;
+                    cmd.CommandTimeout = 1800;
                     cmd.CommandType = CommandType.Text;
                                         
                     System.Data.SqlClient.SqlDataReader dr = cmd.ExecuteReader();

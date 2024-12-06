@@ -18,7 +18,7 @@ namespace DAL
                 using (SqlConnection cn = con.Conectar())
                 {
                     SqlCommand cmd = new SqlCommand("gj_truncate_tablas_in", cn);
-                    cmd.CommandTimeout = 900;
+                    cmd.CommandTimeout = 1800;
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     cmd.ExecuteNonQuery();                                       
@@ -43,7 +43,7 @@ namespace DAL
                 using (SqlConnection cn = con.Conectar())
                 {                    
                     SqlCommand cmd = new SqlCommand("gj_in_timesheet_insert", cn);
-                    cmd.CommandTimeout = 900;
+                    cmd.CommandTimeout = 1800;
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     cmd.Parameters.AddWithValue("@v_desde", Desde);
@@ -77,7 +77,7 @@ namespace DAL
                 using (SqlConnection cn = con.Conectar())
                 {
                     SqlCommand cmd = new SqlCommand("gj_in_timesheet_parse_in", cn);
-                    cmd.CommandTimeout = 900;
+                    cmd.CommandTimeout = 1800;
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     cmd.ExecuteNonQuery();
@@ -102,7 +102,7 @@ namespace DAL
                 using (SqlConnection cn = con.Conectar())
                 {                    
                     SqlCommand cmd = new SqlCommand("gj_in_proyectos_insert", cn);
-                    cmd.CommandTimeout = 900;
+                    cmd.CommandTimeout = 1800;
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     SqlDataReader dr = cmd.ExecuteReader();
@@ -134,7 +134,7 @@ namespace DAL
                 using (SqlConnection cn = con.Conectar())
                 {                    
                     SqlCommand cmd = new SqlCommand("gj_in_jiras_insert", cn);
-                    cmd.CommandTimeout = 900;
+                    cmd.CommandTimeout = 1800;
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     cmd.Parameters.AddWithValue("@v_desde", Desde);
@@ -169,7 +169,7 @@ namespace DAL
                 {
 
                     SqlCommand cmd = new SqlCommand("gj_in_enlaces_insert", cn);
-                    cmd.CommandTimeout = 900;
+                    cmd.CommandTimeout = 1800;
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     cmd.ExecuteNonQuery();
@@ -195,7 +195,7 @@ namespace DAL
                 {
 
                     SqlCommand cmd = new SqlCommand("gj_in_usuarios_insert", cn);
-                    cmd.CommandTimeout = 900;
+                    cmd.CommandTimeout = 1800;
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     cmd.ExecuteNonQuery();
@@ -221,7 +221,7 @@ namespace DAL
                 {
 
                     SqlCommand cmd = new SqlCommand("gj_in_proyectos_x_componentes_insert", cn);
-                    cmd.CommandTimeout = 900;
+                    cmd.CommandTimeout = 1800;
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     cmd.ExecuteNonQuery();
@@ -247,7 +247,7 @@ namespace DAL
                 {
 
                     SqlCommand cmd = new SqlCommand("gj_jiras_actualizar", cn);
-                    cmd.CommandTimeout = 900;
+                    cmd.CommandTimeout = 1800;
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@v_ultimos", (v_ultimos? 1: 0));
 
@@ -280,7 +280,7 @@ namespace DAL
                 {
 
                     SqlCommand cmd = new SqlCommand("gj_jiras_key_ejecucion_anterior", cn);
-                    cmd.CommandTimeout = 900;
+                    cmd.CommandTimeout = 1800;
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     SqlDataReader dr = cmd.ExecuteReader();
@@ -312,7 +312,7 @@ namespace DAL
                 {
 
                     SqlCommand cmd = new SqlCommand("gj_epicas_actualizar", cn);
-                    cmd.CommandTimeout = 900;
+                    cmd.CommandTimeout = 1800;
                     cmd.CommandType = CommandType.StoredProcedure;                    
 
                     SqlDataReader dr = cmd.ExecuteReader();
@@ -344,7 +344,7 @@ namespace DAL
                 {
 
                     SqlCommand cmd = new SqlCommand("gj_jiras_a_enlazar", cn);
-                    cmd.CommandTimeout = 900;
+                    cmd.CommandTimeout = 1800;
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     SqlDataReader dr = cmd.ExecuteReader();
@@ -376,7 +376,7 @@ namespace DAL
                 using (SqlConnection cn = con.Conectar())
                 {
                     SqlCommand cmd = new SqlCommand("sg_truncate_tablas_in", cn);
-                    cmd.CommandTimeout = 900;
+                    cmd.CommandTimeout = 1800;
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     cmd.ExecuteNonQuery();
@@ -400,7 +400,7 @@ namespace DAL
                 using (SqlConnection cn = con.Conectar())
                 {
                     SqlCommand cmd = new SqlCommand("sg_in_usuarios_insert", cn);
-                    cmd.CommandTimeout = 900;
+                    cmd.CommandTimeout = 1800;
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     cmd.Parameters.AddWithValue("@sugar_id", usuario.SugarId);
@@ -433,7 +433,7 @@ namespace DAL
                 using (SqlConnection cn = con.Conectar())
                 {
                     SqlCommand cmd = new SqlCommand("sg_in_cuentas_insert", cn);
-                    cmd.CommandTimeout = 900;
+                    cmd.CommandTimeout = 1800;
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     cmd.Parameters.AddWithValue("@sugar_id", cuenta.SugarId);
@@ -468,7 +468,7 @@ namespace DAL
                 using (SqlConnection cn = con.Conectar())
                 {
                     SqlCommand cmd = new SqlCommand("sg_in_tareas_insert", cn);
-                    cmd.CommandTimeout = 900;
+                    cmd.CommandTimeout = 1800;
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     cmd.Parameters.AddWithValue("@sugar_id", tarea.SugarId);
@@ -505,7 +505,7 @@ namespace DAL
                 using (SqlConnection cn = con.Conectar())
                 {
                     SqlCommand cmd = new SqlCommand("sg_in_autorizaciones_insert", cn);
-                    cmd.CommandTimeout = 900;
+                    cmd.CommandTimeout = 1800;
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     cmd.Parameters.AddWithValue("@sugar_id", autorizacion.SugarId);
@@ -540,7 +540,7 @@ namespace DAL
                 using (SqlConnection cn = con.Conectar())
                 {
                     SqlCommand cmd = new SqlCommand("sg_in_oportunidades_insert", cn);
-                    cmd.CommandTimeout = 900;
+                    cmd.CommandTimeout = 1800;
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     cmd.Parameters.AddWithValue("@sugar_id", oportunidad.SugarId);
@@ -581,7 +581,7 @@ namespace DAL
                 using (SqlConnection cn = con.Conectar())
                 {
                     SqlCommand cmd = new SqlCommand("sg_carga_masiva_sugar", cn);
-                    cmd.CommandTimeout = 900;
+                    cmd.CommandTimeout = 1800;
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     cmd.ExecuteNonQuery();
