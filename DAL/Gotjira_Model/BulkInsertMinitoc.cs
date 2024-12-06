@@ -10,7 +10,7 @@ namespace DAL
     public class BulkInsertMinitoc
     {
         // Número de registros por cada bulk insert
-        int batchSize = 5000;
+        // int batchSize = 5000;
         public void LoadCsvToDataTableAndBulkInsert(string filePath)
         {
             // Step 1: Cargar el CSV en un DataTable
