@@ -3,20 +3,28 @@
   "WorkspaceRootPath": "C:\\Users\\antx\\source\\repos\\WebGotJira\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{FFBDDAE8-80F3-4DC8-85EB-A86E39297EC4}|DAL\\DAL.csproj|c:\\users\\antx\\source\\repos\\webgotjira\\dal\\gotjira_model\\bulkinsertworklogs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FFBDDAE8-80F3-4DC8-85EB-A86E39297EC4}|DAL\\DAL.csproj|solutionrelative:dal\\gotjira_model\\bulkinsertworklogs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72D7C962-AB24-44DA-9565-1B68B4994C50}|ServiceGotJira\\ServiceGotJira\\ServiceGotJira.csproj|c:\\users\\antx\\source\\repos\\webgotjira\\servicegotjira\\servicegotjira\\winservicegotjira.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72D7C962-AB24-44DA-9565-1B68B4994C50}|ServiceGotJira\\ServiceGotJira\\ServiceGotJira.csproj|solutionrelative:servicegotjira\\servicegotjira\\winservicegotjira.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{8BB5811B-D0AE-44A8-A4A0-B1E49DC804A1}|GotJira\\GotJira.csproj|c:\\users\\antx\\source\\repos\\webgotjira\\gotjira\\clsjira.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{8BB5811B-D0AE-44A8-A4A0-B1E49DC804A1}|GotJira\\GotJira.csproj|solutionrelative:gotjira\\clsjira.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{FFBDDAE8-80F3-4DC8-85EB-A86E39297EC4}|DAL\\DAL.csproj|c:\\users\\antx\\source\\repos\\webgotjira\\dal\\mtablasin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{FFBDDAE8-80F3-4DC8-85EB-A86E39297EC4}|DAL\\DAL.csproj|C:\\Users\\antx\\source\\repos\\WebGotJira\\dal\\gotjira_model\\bulkinsertminitoc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FFBDDAE8-80F3-4DC8-85EB-A86E39297EC4}|DAL\\DAL.csproj|solutionrelative:dal\\gotjira_model\\bulkinsertminitoc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FFBDDAE8-80F3-4DC8-85EB-A86E39297EC4}|DAL\\DAL.csproj|C:\\Users\\antx\\source\\repos\\WebGotJira\\dal\\mtablasin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{FFBDDAE8-80F3-4DC8-85EB-A86E39297EC4}|DAL\\DAL.csproj|solutionrelative:dal\\mtablasin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A7C0CB1A-3078-4C31-B9A6-94775EA5ABFD}|DBC\\DBC.csproj|C:\\Users\\antx\\source\\repos\\WebGotJira\\dbc\\clsconfiguracion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A7C0CB1A-3078-4C31-B9A6-94775EA5ABFD}|DBC\\DBC.csproj|solutionrelative:dbc\\clsconfiguracion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FFBDDAE8-80F3-4DC8-85EB-A86E39297EC4}|DAL\\DAL.csproj|C:\\Users\\antx\\source\\repos\\WebGotJira\\dal\\gotjira_model\\bulkinsertminitoc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FFBDDAE8-80F3-4DC8-85EB-A86E39297EC4}|DAL\\DAL.csproj|solutionrelative:dal\\gotjira_model\\bulkinsertminitoc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,21 +34,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 5,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "MTablasIn.cs",
-              "DocumentMoniker": "C:\\Users\\antx\\source\\repos\\WebGotJira\\DAL\\MTablasIn.cs",
-              "RelativeDocumentMoniker": "DAL\\MTablasIn.cs",
-              "ToolTip": "C:\\Users\\antx\\source\\repos\\WebGotJira\\DAL\\MTablasIn.cs",
-              "RelativeToolTip": "DAL\\MTablasIn.cs",
-              "ViewState": "AgIAABoAAAAAAAAAAAASwDIAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-06T14:53:37.276Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Bookmark",
               "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
@@ -64,19 +59,57 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "BulkInsertWorkLogs.cs",
+              "DocumentMoniker": "C:\\Users\\antx\\source\\repos\\WebGotJira\\DAL\\Gotjira_Model\\BulkInsertWorkLogs.cs",
+              "RelativeDocumentMoniker": "DAL\\Gotjira_Model\\BulkInsertWorkLogs.cs",
+              "ToolTip": "C:\\Users\\antx\\source\\repos\\WebGotJira\\DAL\\Gotjira_Model\\BulkInsertWorkLogs.cs",
+              "RelativeToolTip": "DAL\\Gotjira_Model\\BulkInsertWorkLogs.cs",
+              "ViewState": "AgIAAE0AAAAAAAAAAAAkwFwAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-09T12:40:31.156Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "WinServiceGotJira.cs",
+              "DocumentMoniker": "C:\\Users\\antx\\source\\repos\\WebGotJira\\ServiceGotJira\\ServiceGotJira\\WinServiceGotJira.cs",
+              "RelativeDocumentMoniker": "ServiceGotJira\\ServiceGotJira\\WinServiceGotJira.cs",
+              "ToolTip": "C:\\Users\\antx\\source\\repos\\WebGotJira\\ServiceGotJira\\ServiceGotJira\\WinServiceGotJira.cs",
+              "RelativeToolTip": "ServiceGotJira\\ServiceGotJira\\WinServiceGotJira.cs",
+              "ViewState": "AgIAAHMAAAAAAAAAAAAkwIUAAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-09T12:34:39.843Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "MTablasIn.cs",
+              "DocumentMoniker": "C:\\Users\\antx\\source\\repos\\WebGotJira\\DAL\\MTablasIn.cs",
+              "RelativeDocumentMoniker": "DAL\\MTablasIn.cs",
+              "ToolTip": "C:\\Users\\antx\\source\\repos\\WebGotJira\\DAL\\MTablasIn.cs",
+              "RelativeToolTip": "DAL\\MTablasIn.cs",
+              "ViewState": "AgIAABoAAAAAAAAAAAASwDIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-06T14:53:37.276Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "clsJira.cs",
               "DocumentMoniker": "C:\\Users\\antx\\source\\repos\\WebGotJira\\GotJira\\clsJira.cs",
               "RelativeDocumentMoniker": "GotJira\\clsJira.cs",
               "ToolTip": "C:\\Users\\antx\\source\\repos\\WebGotJira\\GotJira\\clsJira.cs",
               "RelativeToolTip": "GotJira\\clsJira.cs",
-              "ViewState": "AgIAAPgBAAAAAAAAAAAhwA4CAABCAAAAAAAAAA==",
+              "ViewState": "AgIAAD0MAAAAAAAAAAAkwEAMAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-12-06T01:43:01.74Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 5,
               "Title": "clsConfiguracion.cs",
               "DocumentMoniker": "C:\\Users\\antx\\source\\repos\\WebGotJira\\DBC\\clsConfiguracion.cs",
               "RelativeDocumentMoniker": "DBC\\clsConfiguracion.cs",
@@ -96,7 +129,8 @@
               "RelativeToolTip": "DAL\\Gotjira_Model\\BulkInsertMinitoc.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAowBwAAAAxAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-06T01:42:06.624Z"
+              "WhenOpened": "2024-12-06T01:42:06.624Z",
+              "EditorCaption": ""
             }
           ]
         },

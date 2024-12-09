@@ -3131,12 +3131,12 @@ namespace GotJira
                             project_key + "|" +
                             issue_key + "|" +
                             issuetype_name + "|" +
-                            summary?.Replace("|", "-") + "|" + // SI VIENE ALGUN PIPE LO REEMPLAZO POR UN GUION
+                            Regex.Replace(summary ?? "", @"\r\n|\r|\n", "").Replace("|", "-") + "|" + // SI VIENE ALGUN PIPE LO REEMPLAZO POR UN GUION Y SACO LOS ENTERS
                             priority_name + "|" +
                             string_started + "|" +
                             worklog.author.displayName + "|" +
                             worklog.timeSpentSeconds + "|" +
-                            comment?.Replace("|", "-") + "|" + // SI VIENE ALGUN PIPE LO REEMPLAZO POR UN GUION
+                            Regex.Replace(comment ?? "", @"\r\n|\r|\n", "").Replace("|", "-") + "|" + // SI VIENE ALGUN PIPE LO REEMPLAZO POR UN GUION Y SACO LOS ENTERS
 
                             /*campos extras...*/
                             worklog.timeSpent + "|" +
@@ -3257,12 +3257,12 @@ namespace GotJira
                             project_key + "|" +
                             issue_key + "|" +
                             issuetype_name + "|" +
-                            summary?.Replace("|", "-") + "|" + // SI VIENE ALGUN PIPE LO REEMPLAZO POR UN GUION
+                            Regex.Replace(summary ?? "", @"\r\n|\r|\n", "").Replace("|", "-") + "|" + // SI VIENE ALGUN PIPE LO REEMPLAZO POR UN GUION
                             priority_name + "|" +
                             string_started + "|" +
                             worklog.author.displayName + "|" +
                             worklog.timeSpentSeconds + "|" +
-                            comment?.Replace("|", "-") + "|" + // SI VIENE ALGUN PIPE LO REEMPLAZO POR UN GUION
+                            Regex.Replace(comment ?? "", @"\r\n|\r|\n", "").Replace("|", "-") + "|" + // SI VIENE ALGUN PIPE LO REEMPLAZO POR UN GUION
 
                             /*campos extras...*/
                             worklog.timeSpent + "|" +
