@@ -62,7 +62,6 @@
     <Compile Include="Add_WorkLogs.cs" />
     <Compile Include="clsEncrypt.cs" />
     <Compile Include="clsJira.cs" />
-    <Compile Include="clsTimeSheet.cs" />
     <Compile Include="Add_jira.cs" />
     <Compile Include="Add_IssueLnk.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -400,8 +400,8 @@ namespace GotJira
             }
         }
 
-        public void ActualizarDB(/*string Hasta*/)
-        {
+        public void ActualizarDB()
+        {            
             DateTime Hoy = DateTime.Now;
             DateTime Desde;
             DateTime Hasta = DateTime.Now;
@@ -412,12 +412,13 @@ namespace GotJira
             int diaActual = (int)Hoy.DayOfWeek;
             
             MTablasIn objTablasIn = new MTablasIn();
+            objTablasIn.LimpiarTablasIN();
+
             MParametros objParametro = new MParametros();
-                        
+            
             try
             {
-                Task.Run(() => Utilidades.LogService("FIN Jira"));
-
+                Utilidades.LogService("ActualizarDB(): INICIADO");
                 try
                 {
                     string strPathFile = "";
@@ -438,7 +439,7 @@ namespace GotJira
                 catch (Exception F)
                 {
 
-                    Task.Run(() => Utilidades.LogService("Error Grabar_InProject(): " + F.Message));
+                    Utilidades.LogService("Error Grabar_InProject(): " + F.Message);
 
                     F.Data.Clear();
                 }
@@ -463,7 +464,7 @@ namespace GotJira
                 catch (Exception F)
                 {
 
-                    Task.Run(() => Utilidades.LogService("Error Grabar_InProyectosPorComponentes(): " + F.Message));
+                    Utilidades.LogService("Error Grabar_InProyectosPorComponentes(): " + F.Message);
 
                     F.Data.Clear();
                 }
@@ -488,7 +489,7 @@ namespace GotJira
                 catch (Exception F)
                 {
 
-                    Task.Run(() => Utilidades.LogService("Error Grabar_InUsuariosJira(): " + F.Message));
+                    Utilidades.LogService("Error Grabar_InUsuariosJira(): " + F.Message);
 
                     F.Data.Clear();
                 }
@@ -575,6 +576,8 @@ namespace GotJira
                     }
                     jirAdicGDD = null;
 
+                    objTablasIn.Grabar_InJiras(Desde, Hasta);
+
                     //--------------------------------------------------------------------------------------------------------
                     // in_jiras se lleno mas arriba, in_worklogs necesita leer los in_jiras para saber si hay horas eliminadas
                     //--------------------------------------------------------------------------------------------------------
@@ -589,34 +592,31 @@ namespace GotJira
                         }
                         catch (Exception ex)
                         {
-                            Task.Run(() => Utilidades.LogService("Error WorkLog: " + ex.Message));
+                            Utilidades.LogService("Error WorkLog: " + ex.Message);
                         }
                         wrl = null;
 
                         string Mensaje = "";
                         Mensaje = objTablasIn.Grabar_InTimeSheet(Desde, Hasta);
 
-                        if (Mensaje != "") Task.Run(() => Utilidades.LogService("Grabar_InTimeSheet(): " + Mensaje));
+                        if (Mensaje != "") Utilidades.LogService("Grabar_InTimeSheet(): " + Mensaje);
 
                     }
                     catch (Exception F)
                     {
 
-                        Task.Run(() => Utilidades.LogService("Error Grabar_InTimeSheet(): " + F.Message));
+                        Utilidades.LogService("Error Grabar_InTimeSheet(): " + F.Message);
 
                         F.Data.Clear();
                     }
                     //--------------------------------------------------------------------------------------------------------
                     // in_jiras se lleno mas arriba, in_worklogs necesita leer los in_jiras para saber si hay horas eliminadas
                     //--------------------------------------------------------------------------------------------------------
-
-
-                    objTablasIn.Grabar_InJiras(Desde, Hasta);
                 }
                 catch (Exception F)
                 {
 
-                    Task.Run(() => Utilidades.LogService("Error Grabar_InJiras(): " + F.Message));
+                    Utilidades.LogService("Error Grabar_InJiras(): " + F.Message);
 
                     F.Data.Clear();
                 }
@@ -630,7 +630,7 @@ namespace GotJira
                     catch (Exception F)
                     {
 
-                        Task.Run(() => Utilidades.LogService("Error ActualizarRol(): " + F.Message));
+                        Utilidades.LogService("Error ActualizarRol(): " + F.Message);
 
                         F.Data.Clear();
                     }
@@ -670,7 +670,7 @@ namespace GotJira
                 catch (Exception F)
                 {
 
-                    Task.Run(() => Utilidades.LogService("Error Grabar_InEnlaces(): " + F.Message));
+                    Utilidades.LogService("Error Grabar_InEnlaces(): " + F.Message);
 
                     F.Data.Clear();
                 }                                
@@ -703,7 +703,7 @@ namespace GotJira
                     catch (Exception F)
                     {
 
-                        Task.Run(() => Utilidades.LogService("Error PrecalculoIndicadoresProyecto(): " + F.Message));
+                        Utilidades.LogService("Error PrecalculoIndicadoresProyecto(): " + F.Message);
 
                         F.Data.Clear();
                     }
@@ -723,17 +723,17 @@ namespace GotJira
                 string clase = frame.GetFileName().Split('\\').Last();
                 string metodo = frame.GetMethod().Name;
 
-                Task.Run(() => Utilidades.LogService("Error ActualizarDB() Clase: " + clase + " Método(): " + metodo + " Linea: " + line + " Error: " + ex.Message));
+                Utilidades.LogService("Error ActualizarDB() Clase: " + clase + " Método(): " + metodo + " Linea: " + line + " Error: " + ex.Message);
 
                 ex.Data.Clear();
             }
             finally
             {
                 objTablasIn = null;
-                objParametro = null;
-
-                Task.Run(() => Utilidades.LogService("ActualizarDB(): FIN"));
+                objParametro = null;                
             }
+
+            Utilidades.LogService("ActualizarDB(): FIN");
         }
 
         public void ActualizarDBLite(DateTime FecUltimaSinIssuesLite)

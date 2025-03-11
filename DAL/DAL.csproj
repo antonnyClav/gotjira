@@ -59,7 +59,6 @@
     <Compile Include="MTablasExt.cs" />
     <Compile Include="MTablasIn.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Gotjira_Model\BulkInsertTimeSheet.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DBC\DBC.csproj">

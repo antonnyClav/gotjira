@@ -1,6 +1,11 @@
-﻿<configuration>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<configuration>
   <connectionStrings>
-    <SqlConnectionString>Persist Security Info=False;User ID=sa;Password=Emerix01;Initial Catalog=GotJira;Data Source=W10\SQLEXPRESS;</SqlConnectionString>
+    <SqlConnectionString>Persist Security Info=False;User ID=sa;Password=Emerix01;Initial Catalog=GotJira;Data Source=DESKTOP-G2ON51H;</SqlConnectionString>
+    <SqlConnectionStringCloud>Persist Security Info=False;User ID=sa;Password=Emerix01;Initial Catalog=GotJira;Data Source=DESKTOP-G2ON51H;</SqlConnectionStringCloud>
     <Pathfiles>G:\GotJira\</Pathfiles>
+    <Db>SqlConnectionString</Db>
+	<ProcesarArchivos>0</ProcesarArchivos>
+	<SincronizarTest>1</SincronizarTest>
   </connectionStrings>
 </configuration>

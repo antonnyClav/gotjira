@@ -2,6 +2,8 @@
 using System.Timers;
 using GotJira;
 using System.Threading.Tasks;
+using System.Xml.Linq;
+using System.Linq;
 
 namespace AddAtlassianGotJiraJiras
 {
@@ -119,19 +121,25 @@ namespace AddAtlassianGotJiraJiras
                 {
                     WriteToEventLog("FULL PROCESANDO...");
 
-                    var _GetTimeSheet = GetTimeSheet(/*FechaDesde, FechaHasta*/);    //FECHA DESDE LA TOMA DE PARAMETROS TIMESHEET
+                    if (ProcesarArchivos() == "1")
+                    {
+                        WriteToEventLog("Configurado para procesar los archivos .txt");
+                        ActualizarDB(); //FECHA DESDE LA TOMA DE PARAMETROS TIMESHEET  
+                    }
+                    else
+                    {
+                        var _GetProjects = GetProjects(); //OBTENGO TODOS LOS PROYECTOS DE JIRA
 
-                    var _GetProjects = GetProjects(); //OBTENGO TODOS LOS PROYECTOS DE JIRA
+                        var _GetProjectForComponent = GetProjectForComponent(); //OBTENGO TODOS LOS PROYECTOS_COMPONENTES DE JIRA
 
-                    var _GetProjectForComponent = GetProjectForComponent(); //OBTENGO TODOS LOS PROYECTOS_COMPONENTES DE JIRA
+                        var _GetUsers = GetUsers(); //OBTENGO LOS USUARIOS DE JIRA Y AD                                       
 
-                    var _GetUsers = GetUsers(); //OBTENGO LOS USUARIOS DE JIRA Y AD                                       
+                        var _GetIssues = GetIssuesLite(); //OBTENGO JIRAS FECHA DESDE LA TOMA DE PARAMETROS TIMESHEET                   
 
-                    var _GetIssues = GetIssuesLite(); //OBTENGO JIRAS FECHA DESDE LA TOMA DE PARAMETROS TIMESHEET                   
+                        await Task.WhenAll(_GetProjects, _GetProjectForComponent, _GetUsers, _GetIssues);
 
-                    await Task.WhenAll(_GetTimeSheet, _GetProjects, _GetProjectForComponent, _GetUsers, _GetIssues);
-
-                    ActualizarDB(/*FechaHasta*/); //FECHA DESDE LA TOMA DE PARAMETROS TIMESHEET                    
+                        ActualizarDB(); //FECHA DESDE LA TOMA DE PARAMETROS TIMESHEET                    
+                    }                    
                 }
                 catch (Exception ex)
                 {
@@ -238,32 +246,7 @@ namespace AddAtlassianGotJiraJiras
                 throw ex;
             }
         }
-        protected async Task GetTimeSheet(/*string FechaDesde = "", string FechaHasta = ""*/)
-        {
-            try
-            {
-                int iCantHorasInsert;
-                clsTimeSheet TimeSheet = new clsTimeSheet();
-                //if (FechaDesde != "")
-                //{
-                //    TimeSheet.Desde = DateTime.Parse(FechaDesde);
-                //}
-                //if (FechaHasta != "")
-                //{
-                //    TimeSheet.Hasta = DateTime.Parse(FechaHasta);
-                //}
 
-                iCantHorasInsert = await Task.Run(() => TimeSheet.ObtenerTimeSheet());
-                if (iCantHorasInsert < 0)
-                    WriteToEventLog("GetTimeSheet() FIN FORZADO: NO ES HORARIO O DIA VALIDO." + DateTime.Now + " ->");
-
-                TimeSheet = null;
-             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
         protected async Task GetUsers()
         {
             try
@@ -300,8 +283,8 @@ namespace AddAtlassianGotJiraJiras
                 clsJira objJira = new clsJira();
                 //objJira.Notificar += new clsJira.work(Notificar);
 
-                objJira.ActualizarDB(/*FechaHasta*/);
-
+                objJira.ActualizarDB();
+                                
                 objJira = null;
 
                 return true;
@@ -310,6 +293,33 @@ namespace AddAtlassianGotJiraJiras
             {
                 throw ex;
             }
+        }
+
+        string ProcesarArchivos()
+        {
+            string _return = "";
+            // Ruta del archivo XML
+            string filePath = @"EncryptConn.xml";
+
+            // Cargar el archivo XML
+            XDocument xmlDoc = XDocument.Load(filePath);
+
+            // Buscar el elemento <ProcesarArchivos>
+            XElement dbElement = xmlDoc.Descendants("ProcesarArchivos").FirstOrDefault();
+            if (dbElement != null)
+            {
+                _return = dbElement.Value;
+                if(_return=="1")
+                    Console.WriteLine("NO SE CONSULTA LAS APIS DE ATLASSIAN JIRA, SE PROCESAN LOS ARCHIVOS EN DISCO.");
+                else
+                    Console.WriteLine("CONSULTANDO LAS APIS DE ATLASSIAN JIRA.");
+            }
+            else
+            {
+                Console.WriteLine("El tag <ProcesarArchivos> no se encontró en el archivo XML.");
+            }
+
+            return _return;
         }
         protected void Notificar(string Notificacion)
         {            

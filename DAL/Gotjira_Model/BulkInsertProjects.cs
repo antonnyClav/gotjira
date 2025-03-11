@@ -39,12 +39,19 @@ namespace DAL
 
                 // Añadir la fila al DataTable
                 dataTable.Rows.Add(row);
-            }
-
-            // Step 2: Insertar los datos del DataTable en la base de datos usando SqlBulkCopy
+            }            
+            
             clsDatabaseCn con = new clsDatabaseCn();
+             
+            // Step 2: Insertar los datos del DataTable en la base de datos usando SqlBulkCopy
             using (SqlConnection connection = con.Conectar())
             {
+                //// Paso 3: Limpiar la tabla
+                //using (SqlCommand deleteCommand = new SqlCommand("TRUNCATE TABLE dbo.in_proyectos", connection))
+                //{
+                //    deleteCommand.ExecuteNonQuery();
+                //}
+
                 using (SqlBulkCopy bulkCopy = new SqlBulkCopy(connection))
                 {
                     bulkCopy.DestinationTableName = "dbo.in_proyectos"; // Nombre de la tabla de destino
