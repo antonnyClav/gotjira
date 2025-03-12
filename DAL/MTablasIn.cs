@@ -10,6 +10,33 @@ namespace DAL
     {
         /* GOTJIRA */
 
+        public void DeleteWklHor(long Id)
+        {
+            try
+            {
+                clsDatabaseCn con = new clsDatabaseCn();
+                using (SqlConnection cn = con.Conectar())
+                {
+                    SqlCommand cmd = new SqlCommand("gj_wkl_hor_delete", cn);
+                    cmd.CommandTimeout = 1800;
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("@v_id", Id);
+
+                    cmd.ExecuteNonQuery();
+
+                    cmd.Connection.Close();
+                    cmd = null;
+                    cn.Close();
+                }
+                con = null;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public void LimpiarTablasIN()
         {
             try

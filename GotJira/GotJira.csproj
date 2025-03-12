@@ -60,6 +60,7 @@
     <Compile Include="Add_EpicJira.cs" />
     <Compile Include="Add_jira_Lite.cs" />
     <Compile Include="Add_WorkLogs.cs" />
+    <Compile Include="Add_Worklogs_Deleted.cs" />
     <Compile Include="clsEncrypt.cs" />
     <Compile Include="clsJira.cs" />
     <Compile Include="Add_jira.cs" />

@@ -134,9 +134,11 @@ namespace AddAtlassianGotJiraJiras
 
                         var _GetUsers = GetUsers(); //OBTENGO LOS USUARIOS DE JIRA Y AD                                       
 
+                        var _DeleteWorklogsAndHours = DeleteWorklogsAndHours(); //BORRADO DE WORKLOGS, DESDE HOY A 5 DIAS ATRAS
+
                         var _GetIssues = GetIssuesLite(); //OBTENGO JIRAS FECHA DESDE LA TOMA DE PARAMETROS TIMESHEET                   
 
-                        await Task.WhenAll(_GetProjects, _GetProjectForComponent, _GetUsers, _GetIssues);
+                        await Task.WhenAll(_GetProjects, _GetProjectForComponent, _GetUsers, _GetIssues, _DeleteWorklogsAndHours);
 
                         ActualizarDB(); //FECHA DESDE LA TOMA DE PARAMETROS TIMESHEET                    
                     }                    
@@ -260,6 +262,22 @@ namespace AddAtlassianGotJiraJiras
                 throw ex;
             }            
         }
+
+        
+        protected async Task DeleteWorklogsAndHours()
+        {            
+            try
+            {
+                clsJira objJira = new clsJira();
+                await Task.Run(() => objJira.DeleteWorklogsAndHours());
+                objJira = null;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }            
+        }
+
         protected async Task<DateTime> GetIssuesLite()
         {
             DateTime FecUltimaSinIssuesLite = DateTime.MinValue;

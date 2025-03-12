@@ -579,7 +579,7 @@ namespace GotJira
                     objTablasIn.Grabar_InJiras(Desde, Hasta);
 
                     //--------------------------------------------------------------------------------------------------------
-                    // in_jiras se lleno mas arriba, in_worklogs necesita leer los in_jiras para saber si hay horas eliminadas
+                    // Llenado de worklogs
                     //--------------------------------------------------------------------------------------------------------
                     try
                     {
@@ -610,7 +610,7 @@ namespace GotJira
                         F.Data.Clear();
                     }
                     //--------------------------------------------------------------------------------------------------------
-                    // in_jiras se lleno mas arriba, in_worklogs necesita leer los in_jiras para saber si hay horas eliminadas
+                    // Llenado de worklogs
                     //--------------------------------------------------------------------------------------------------------
                 }
                 catch (Exception F)
@@ -1133,6 +1133,28 @@ namespace GotJira
             }
 
             return resultado;
+        }
+
+        /// <summary>
+        /// Eliminacion de Worklogs
+        /// </summary>  
+        public async Task DeleteWorklogsAndHours()
+        {
+            try
+            {
+                DateTime fechaHoy = new DateTime();
+                fechaHoy = DateTime.Today.AddDays(-5); //Eliminaciones de horas desde hoy a 5 dias para atras. (estos 5 puede ser poco)
+
+                DateTime fecha = new DateTime(fechaHoy.Year, fechaHoy.Month, fechaHoy.Day, 0, 0, 0, DateTimeKind.Utc);
+                long FechaMiliSegundos = new DateTimeOffset(fecha).ToUnixTimeMilliseconds();
+                //Console.WriteLine(FechaMiliSegundos);
+
+                await DeleteWorklogsAndHoursAsync(FechaMiliSegundos);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }            
         }
 
         /// <summary>
@@ -2130,6 +2152,46 @@ namespace GotJira
             }
 
             return LxI;
+        }
+
+        private async Task DeleteWorklogsAndHoursAsync(long FechaMiliSegundos)
+        {          
+            var resource = String.Format("https://softoffice.atlassian.net/rest/api/3/worklog/deleted?since={0}&startAt=0&maxResults=5000&fields=worklogId", FechaMiliSegundos);
+
+            var client = new RestClient(resource);
+            client.Timeout = -1;
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("Host", "softoffice.atlassian.net");
+            request.AddHeader("Cache-Control", "no-cache");
+            request.AddHeader("Authorization", "Basic amlyYS5lbXhAZ21haWwuY29tOjVSNlIzVjhiM0hNR1ZmTXFSUUVqMTFDNQ==");
+            IRestResponse response = await client.ExecuteAsync(request);
+            Add_Worklogs_Deleted Wlk = new Add_Worklogs_Deleted();
+            MTablasIn objTablasIn = new MTablasIn();
+            if (response.IsSuccessful)
+            {
+                var result = response.Content;
+
+                try
+                {
+                    Wlk = JsonConvert.DeserializeObject<Add_Worklogs_Deleted>(result);
+                    foreach (var item in Wlk.values)
+                    {
+                        objTablasIn.DeleteWklHor(item.worklogId);
+                        objTablasIn = new MTablasIn();
+                    }
+
+                    objTablasIn = null;
+                }
+                catch (Exception ex)
+                {
+                    Utilidades.LogService("Error DeleteWorklogsAndHours(): " + ex.Message);
+                }
+                //hay mas registros, llamada recursiva
+                if (!Wlk.lastPage)
+                {
+                    await DeleteWorklogsAndHoursAsync(Wlk.until);
+                }
+            }           
         }
 
         private async Task GetLinkForIssue(string IssueKey)
