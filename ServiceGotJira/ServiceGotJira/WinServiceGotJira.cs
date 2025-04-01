@@ -262,8 +262,7 @@ namespace AddAtlassianGotJiraJiras
                 throw ex;
             }            
         }
-
-        
+                
         protected async Task DeleteWorklogsAndHours()
         {            
             try

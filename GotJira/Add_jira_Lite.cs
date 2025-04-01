@@ -148,6 +148,17 @@ namespace AddAtlassianGotJiraJirasLite
         public string value { get; set; }
         public string id { get; set; }
     }
+    public class Customfield18960
+    {
+        public string self { get; set; }
+        public string accountId { get; set; }
+        public AvatarUrls avatarUrls { get; set; }
+        public string displayName { get; set; }
+        public bool active { get; set; }
+        public string timeZone { get; set; }
+        public string accountType { get; set; }
+        public string emailAddress { get; set; }
+    }
     public class Customfield18715
     {
         public string self { get; set; }
@@ -196,6 +207,13 @@ namespace AddAtlassianGotJiraJirasLite
         public string value { get; set; }
         public string id { get; set; }
     }
+    public class Customfield18849
+    {
+        public string self { get; set; }
+        public string value { get; set; }
+        public string id { get; set; }
+    }
+
     public class Customfield18880
     {
         public string self { get; set; }
@@ -319,6 +337,12 @@ namespace AddAtlassianGotJiraJirasLite
         public string value { get; set; }
         public string id { get; set; }
     }
+    public class Customfield18916
+    {
+        public string self { get; set; }
+        public string value { get; set; }
+        public string id { get; set; }
+    }
     public class Customfield18839
     {
         public string self { get; set; }
@@ -361,6 +385,37 @@ namespace AddAtlassianGotJiraJirasLite
     }
 
     public class Customfield18931
+    {
+        public string self { get; set; }
+        public string value { get; set; }
+        public string id { get; set; }
+    }
+    public class Customfield18998
+    {
+        public string self { get; set; }
+        public string value { get; set; }
+        public string id { get; set; }
+    }
+    public class Customfield19031
+    {
+        public string self { get; set; }
+        public string value { get; set; }
+        public string id { get; set; }
+    }
+    public class Customfield19064
+    {
+        public string self { get; set; }
+        public string value { get; set; }
+        public string id { get; set; }
+    }
+
+    public class Customfield19130
+    {
+        public string self { get; set; }
+        public string value { get; set; }
+        public string id { get; set; }
+    }
+    public class Customfield19097
     {
         public string self { get; set; }
         public string value { get; set; }
@@ -424,9 +479,20 @@ namespace AddAtlassianGotJiraJirasLite
         public Customfield18736 customfield_18736 { get; set; }
         public Customfield13200 customfield_13200 { get; set; }
         public Customfield18931 customfield_18931 { get; set; }
+        //Pedido por Analia: soporte asignado a
+        public List<Customfield19130> customfield_19130 { get; set; }
+
+        //Pedido por Analia: Informacion Insuficiente
+        public Customfield18998 customfield_18998 { get; set; }
+        //Pedido por Analia: Priorizado GPD
+        public Customfield19031 customfield_19031 { get; set; }
         //Pedido por Analia: complejidad
         public Customfield12402 customfield_12402 { get; set; }
         //public List<Customfield18957> customfield_12402 { get; set; }
+        //Pedido por Analia: Indicar si es core
+        public List<Customfield19064> customfield_19064 { get; set; }
+        //Pedido por Analia: jira control interno
+        public List<Customfield19097> customfield_19097 { get; set; }
         public Customfield18898 customfield_18898 { get; set; }
         public Timetracking timetracking { get; set; }
         public List<Customfield10007> customfield_10007 { get; set; }
@@ -439,6 +505,8 @@ namespace AddAtlassianGotJiraJirasLite
         public Customfield18880 customfield_18880 { get; set; }
         public DateTime? customfield_13111 { get; set; }
         public List<Customfield18845> customfield_18845 { get; set; }
+        //Pedido por Analia: Entorno
+        public Customfield18849 customfield_18849 { get; set; }
         public Customfield18768 customfield_18768 { get; set; }
         public Reporter reporter { get; set; }
         public Customfield18758 customfield_12100 { get; set; }
@@ -449,10 +517,14 @@ namespace AddAtlassianGotJiraJirasLite
         public List<Customfield18844> customfield_18844 { get; set; }
         public Customfield18838 customfield_18838 { get; set; }
         public Customfield18915 customfield_18915 { get; set; }
+        //Pedido por Analia: Entorno
+        public Customfield18916 customfield_18916 { get; set; }
         public Customfield18839 customfield_18839 { get; set; }
         public Customfield18918 customfield_18918 { get; set; }
         public Worklog worklog { get; set; }
         public Customfield18903 customfield_18903 { get; set; }
+        //Pedido por Analia: Resolutor
+        public Customfield18960 customfield_18960 { get; set; }
         public Customfield15000 customfield_15000 { get; set; }
         public Customfield18715 customfield_18715 { get; set; }
         public Status status { get; set; }

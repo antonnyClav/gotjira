@@ -160,6 +160,7 @@ namespace GotJira
             }
         }
 
+        private string authToken = "amlyYS5lbXhAZ21haWwuY29tOjVSNlIzVjhiM0hNR1ZmTXFSUUVqMTFDNQ==";
         public string User { get; set; } = "";
         public string ApiToken { get; set; } = "";
 
@@ -197,111 +198,111 @@ namespace GotJira
         /// <summary>
         /// Retorna todos los jiras del proyecto consultado. 
         /// </summary>
-        public async Task<bool> GetProjectAndIssues(string ProjectKey)
-        {
-            try
-            {
-                await GetProject(ProjectKey);
-                await GetIssues("", "");
-            }
-            catch (Exception ex)
-            {
-                ex.Data.Clear();
-            }
+        //public async Task<bool> GetProjectAndIssues(string ProjectKey)
+        //{
+        //    try
+        //    {
+        //        await GetProject(ProjectKey);
+        //        await GetIssues("", "");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ex.Data.Clear();
+        //    }
 
-            return true;
-        }
+        //    return true;
+        //}
 
         /// <summary>
         /// Retorna todos los jiras del proyecto consultado filtrando por fechas.
         /// </summary>
         /// <param name="FechaDesde">Formato yyyy/mm/dd hh:mm.</param>
         /// <param name="FechaHasta">Formato yyyy/mm/dd hh:mm.</param>
-        public async Task<bool> GetProjectAndIssues(string ProjectKey, string FechaDesde = "", string FechaHasta = "")
-        {
-            try
-            {
-                await GetProject(ProjectKey);
-                await GetIssues(FechaDesde, FechaHasta);
-            }
-            catch (Exception ex)
-            {
-                ex.Data.Clear();
-            }
+        //public async Task<bool> GetProjectAndIssues(string ProjectKey, string FechaDesde = "", string FechaHasta = "")
+        //{
+        //    try
+        //    {
+        //        await GetProject(ProjectKey);
+        //        await GetIssues(FechaDesde, FechaHasta);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ex.Data.Clear();
+        //    }
 
-            return true;
-        }
+        //    return true;
+        //}
 
         /// <summary>
         /// Retorna todos los proyectos con sus jiras, enlaces, componentes etc...
         /// </summary>
-        public async Task<bool> GetAllProjectsAndIssues()
-        {
-            try
-            {
-                await GetProjects();
-                await GetIssues();
-            }
-            catch (Exception ex)
-            {
-                ex.Data.Clear();
-            }
+        //public async Task<bool> GetAllProjectsAndIssues()
+        //{
+        //    try
+        //    {
+        //        await GetProjects();
+        //        await GetIssues();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ex.Data.Clear();
+        //    }
 
-            return true;
-        }
+        //    return true;
+        //}
 
         /// <summary>
         /// Retorna el proyecto solicitado
         /// </summary>
-        public async Task<int> GetProject(string ProjectKey)
-        {
-            Project project = await jiraConn.Projects.GetProjectAsync(ProjectKey);
+        //public async Task<int> GetProject(string ProjectKey)
+        //{
+        //    Project project = await jiraConn.Projects.GetProjectAsync(ProjectKey);
 
-            //leer de parametro
-            MParametros objParametro = new MParametros();
-            string strPathFile = "";
-            strPathFile = objParametro.ObtenerParametro("Pathfiles");
-            objParametro = null;
+        //    //leer de parametro
+        //    MParametros objParametro = new MParametros();
+        //    string strPathFile = "";
+        //    strPathFile = objParametro.ObtenerParametro("Pathfiles");
+        //    objParametro = null;
 
-            strPathFile = strPathFile + "projects.txt";
+        //    strPathFile = strPathFile + "projects.txt";
 
-            if (project != null)
-            {
-                //File.Delete(strPathFile);
-                File.WriteAllText(strPathFile, string.Empty);
-            }
+        //    if (project != null)
+        //    {
+        //        //File.Delete(strPathFile);
+        //        File.WriteAllText(strPathFile, string.Empty);
+        //    }
 
-            try
-            {
-                //Notificar("Consultando Proyecto");
-                try
-                {
-                    Utilidades.SaveFile(strPathFile, project.Category.Name + "|" + project.Name + "|" + project.Key + "|" + project.LeadUser.DisplayName); //project.Lead
-                }
-                catch (Exception)
-                {
-                    Utilidades.SaveFile(strPathFile, "" + "|" + project.Name + "|" + project.Key + "|" + project.LeadUser.DisplayName); //project.Lead
-                }
-                int resultado;
-                MTablasIn objTablasIn = new MTablasIn();
-                resultado = objTablasIn.Grabar_InProject();
-                //Notificar("Proyecto Grabado...");
+        //    try
+        //    {
+        //        //Notificar("Consultando Proyecto");
+        //        try
+        //        {
+        //            Utilidades.SaveFile(strPathFile, project.Category.Name + "|" + project.Name + "|" + project.Key + "|" + project.LeadUser.DisplayName); //project.Lead
+        //        }
+        //        catch (Exception)
+        //        {
+        //            Utilidades.SaveFile(strPathFile, "" + "|" + project.Name + "|" + project.Key + "|" + project.LeadUser.DisplayName); //project.Lead
+        //        }
+        //        int resultado;
+        //        MTablasIn objTablasIn = new MTablasIn();
+        //        resultado = objTablasIn.Grabar_InProject();
+        //        //Notificar("Proyecto Grabado...");
 
-                //Notificar("Consultando Proyecto Por Componentes");
-                await GetProjectForComponent();
-                //Notificar("Proyecto Por Componentes Grabados");
+        //        //Notificar("Consultando Proyecto Por Componentes");
+        //        await GetProjectForComponent();
+        //        //Notificar("Proyecto Por Componentes Grabados");
 
-                objTablasIn = null;
+        //        objTablasIn = null;
 
-                return resultado;
-            }
-            catch (Exception ex)
-            {
-                //Notificar("Error Carga Proyecto!!!");
-                throw ex;
-            }
+        //        return resultado;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        //Notificar("Error Carga Proyecto!!!");
+        //        throw ex;
+        //    }
 
-        }
+        //}
 
         /// <summary>
         /// Retorna todos los proyectos activos. 
@@ -732,121 +733,121 @@ namespace GotJira
                 objTablasIn = null;
                 objParametro = null;                
             }
-
+            Console.WriteLine("FIN");
             Utilidades.LogService("ActualizarDB(): FIN");
         }
 
-        public void ActualizarDBLite(DateTime FecUltimaSinIssuesLite)
-        {
-            DateTime Desde = DateTime.Now;
-            DateTime Hasta = DateTime.Now;
-            DateTime datetime = DateTime.Now;
-            int diaActual = (int)datetime.DayOfWeek;
-            DateTime FecActual = DateTime.Now;
-            string FecUltimaEjec = "";
-            MTablasIn objTablasIn = new MTablasIn();
-            MParametros objParametro = new MParametros();
+        //public void ActualizarDBLite(DateTime FecUltimaSinIssuesLite)
+        //{
+        //    DateTime Desde = DateTime.Now;
+        //    DateTime Hasta = DateTime.Now;
+        //    DateTime datetime = DateTime.Now;
+        //    int diaActual = (int)datetime.DayOfWeek;
+        //    DateTime FecActual = DateTime.Now;
+        //    string FecUltimaEjec = "";
+        //    MTablasIn objTablasIn = new MTablasIn();
+        //    MParametros objParametro = new MParametros();
 
-            try
-            {
-                Task.Run(() => Utilidades.LogService("FIN Jira"));
+        //    try
+        //    {
+        //        Task.Run(() => Utilidades.LogService("FIN Jira"));
 
-                try
-                {
-                    objTablasIn.Grabar_InProject();
-                }
-                catch (Exception F)
-                {
+        //        try
+        //        {
+        //            objTablasIn.Grabar_InProject();
+        //        }
+        //        catch (Exception F)
+        //        {
 
-                    Task.Run(() => Utilidades.LogService("Error Grabar_InProject(): " + F.Message));
+        //            Task.Run(() => Utilidades.LogService("Error Grabar_InProject(): " + F.Message));
 
-                    F.Data.Clear();
-                }
+        //            F.Data.Clear();
+        //        }
 
-                try
-                {
-                    objTablasIn.Grabar_InUsuariosJira();
-                }
-                catch (Exception F)
-                {
+        //        try
+        //        {
+        //            objTablasIn.Grabar_InUsuariosJira();
+        //        }
+        //        catch (Exception F)
+        //        {
 
-                    Task.Run(() => Utilidades.LogService("Error Grabar_InUsuariosJira(): " + F.Message));
+        //            Task.Run(() => Utilidades.LogService("Error Grabar_InUsuariosJira(): " + F.Message));
 
-                    F.Data.Clear();
-                }
+        //            F.Data.Clear();
+        //        }
 
-                try
-                {
-                    string Mensaje = "";
-                    Mensaje = objTablasIn.Grabar_InTimeSheet(Desde, Hasta);
-                    if (Mensaje != "") Task.Run(() => Utilidades.LogService("Grabar_InTimeSheet(): " + Mensaje));
-                }
-                catch (Exception F)
-                {
+        //        try
+        //        {
+        //            string Mensaje = "";
+        //            Mensaje = objTablasIn.Grabar_InTimeSheet(Desde, Hasta);
+        //            if (Mensaje != "") Task.Run(() => Utilidades.LogService("Grabar_InTimeSheet(): " + Mensaje));
+        //        }
+        //        catch (Exception F)
+        //        {
 
-                    Task.Run(() => Utilidades.LogService("Error Grabar_InTimeSheet(): " + F.Message));
+        //            Task.Run(() => Utilidades.LogService("Error Grabar_InTimeSheet(): " + F.Message));
 
-                    F.Data.Clear();
-                }
+        //            F.Data.Clear();
+        //        }
 
-                try
-                {
-                    objTablasIn.Grabar_InJiras(Desde, Hasta);
-                }
-                catch (Exception F)
-                {
+        //        try
+        //        {
+        //            objTablasIn.Grabar_InJiras(Desde, Hasta);
+        //        }
+        //        catch (Exception F)
+        //        {
 
-                    Task.Run(() => Utilidades.LogService("Error Grabar_InJiras(): " + F.Message));
+        //            Task.Run(() => Utilidades.LogService("Error Grabar_InJiras(): " + F.Message));
 
-                    F.Data.Clear();
-                }
+        //            F.Data.Clear();
+        //        }
 
-                //los enlaces corre todos los dias
-                try
-                {
-                    objTablasIn.Grabar_InEnlaces();
-                }
-                catch (Exception F)
-                {
+        //        //los enlaces corre todos los dias
+        //        try
+        //        {
+        //            objTablasIn.Grabar_InEnlaces();
+        //        }
+        //        catch (Exception F)
+        //        {
 
-                    Task.Run(() => Utilidades.LogService("Error Grabar_InEnlaces(): " + F.Message));
+        //            Task.Run(() => Utilidades.LogService("Error Grabar_InEnlaces(): " + F.Message));
 
-                    F.Data.Clear();
-                }
+        //            F.Data.Clear();
+        //        }
 
 
-                FecUltimaEjec = FecActual.Year.ToString() + "/" + Formating(FecActual.Month) + "/" + Formating(FecActual.Day) + " " + Formating(FecActual.Hour) + ":" + Formating(FecActual.Minute);
-                objParametro.SetearParametro("FecUltimaEjec", FecUltimaEjec);
-                objParametro.SetearParametro("FecUltimaSinIssuesLite", FecUltimaSinIssuesLite.ToString());
-                // LA SIGUIENTE EJECUCION SE HARA:
-                // DESDE LA HORA FIN QUE "TERMINA EL PROCESO" + N CANTIDAD DE HORAS (PARAMETRO)                
-                //GrabarProximaEjecucion();
+        //        FecUltimaEjec = FecActual.Year.ToString() + "/" + Formating(FecActual.Month) + "/" + Formating(FecActual.Day) + " " + Formating(FecActual.Hour) + ":" + Formating(FecActual.Minute);
+        //        objParametro.SetearParametro("FecUltimaEjec", FecUltimaEjec);
+        //        objParametro.SetearParametro("FecUltimaSinIssuesLite", FecUltimaSinIssuesLite.ToString());
+        //        // LA SIGUIENTE EJECUCION SE HARA:
+        //        // DESDE LA HORA FIN QUE "TERMINA EL PROCESO" + N CANTIDAD DE HORAS (PARAMETRO)                
+        //        //GrabarProximaEjecucion();
 
-            }
-            catch (Exception ex)
-            {
-                // Get stack trace for the exception with source file information
-                StackTrace st = new StackTrace(ex, true);
-                // Get the top stack frame
-                StackFrame frame = st.GetFrame(0);
-                // Get the line number from the stack frame
-                int line = frame.GetFileLineNumber();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Get stack trace for the exception with source file information
+        //        StackTrace st = new StackTrace(ex, true);
+        //        // Get the top stack frame
+        //        StackFrame frame = st.GetFrame(0);
+        //        // Get the line number from the stack frame
+        //        int line = frame.GetFileLineNumber();
 
-                string clase = frame.GetFileName().Split('\\').Last();
-                string metodo = frame.GetMethod().Name;
+        //        string clase = frame.GetFileName().Split('\\').Last();
+        //        string metodo = frame.GetMethod().Name;
 
-                Task.Run(() => Utilidades.LogService("Error ActualizarDBLite() Clase: " + clase + " Método(): " + metodo + " Linea: " + line + " Error: " + ex.Message));
+        //        Task.Run(() => Utilidades.LogService("Error ActualizarDBLite() Clase: " + clase + " Método(): " + metodo + " Linea: " + line + " Error: " + ex.Message));
 
-                ex.Data.Clear();
-            }
-            finally
-            {
-                objTablasIn = null;
-                objParametro = null;
+        //        ex.Data.Clear();
+        //    }
+        //    finally
+        //    {
+        //        objTablasIn = null;
+        //        objParametro = null;
 
-                Task.Run(() => Utilidades.LogService("ActualizarDBLite(): FIN"));
-            }
-        }
+        //        Task.Run(() => Utilidades.LogService("ActualizarDBLite(): FIN"));
+        //    }
+        //}
 
         public void GrabarProximaEjecucion()
         {
@@ -873,267 +874,267 @@ namespace GotJira
         /// <summary>
         /// Retorna el jira solicitado
         /// </summary>
-        public async Task<int> GetIssue(string IssueKey)
-        {
-            MParametros objParametro = new MParametros();
+        //public async Task<int> GetIssue(string IssueKey)
+        //{
+        //    MParametros objParametro = new MParametros();
 
-            int resultado;
-            string strPathFile = "";
-            strPathFile = objParametro.ObtenerParametro("Pathfiles");
-            strPathFile = strPathFile + "jiras.txt";
+        //    int resultado;
+        //    string strPathFile = "";
+        //    strPathFile = objParametro.ObtenerParametro("Pathfiles");
+        //    strPathFile = strPathFile + "jiras.txt";
 
-            objParametro = null;
+        //    objParametro = null;
 
-            try
-            {
-                //Notificar("Consultando Jira");
-                //no siempre este metodo funciona, existe para esto un metodo custom SearchJiraAsync()
-                var _issues = await jiraConn.Issues.GetIssuesAsync(IssueKey);
-                resultado = _issues.Count;
-                if (resultado > 0)
-                {
-                    //File.Delete(strPathFile);
-                    File.WriteAllText(strPathFile, string.Empty);
-                }
+        //    try
+        //    {
+        //        //Notificar("Consultando Jira");
+        //        //no siempre este metodo funciona, existe para esto un metodo custom SearchJiraAsync()
+        //        var _issues = await jiraConn.Issues.GetIssuesAsync(IssueKey);
+        //        resultado = _issues.Count;
+        //        if (resultado > 0)
+        //        {
+        //            //File.Delete(strPathFile);
+        //            File.WriteAllText(strPathFile, string.Empty);
+        //        }
 
-                foreach (var issue in _issues)
-                {
+        //        foreach (var issue in _issues)
+        //        {
 
-                    Utilidades.SaveFile(strPathFile, issue.Value.Project + "|" + issue.Key + "|" + issue.Value.Type.Name + "|"
-                            + issue.Value.Summary.Trim() + "|" + issue.Value["Epic Link"] + "|" + issue.Value["Grupo de Actividad"] + "|" + issue.Value["Sprint"] + "|" + issue.Value.ParentIssueKey
-                            + "|" + issue.Value["Origen del error"] + "|" + issue.Value["Fase detectado"] + "|" + (issue.Value.CustomFields[0].Name == "Cliente" ? issue.Value.CustomFields[0].Values[0] : "") + "|" + issue.Value["Marco Producto"]);
+        //            Utilidades.SaveFile(strPathFile, issue.Value.Project + "|" + issue.Key + "|" + issue.Value.Type.Name + "|"
+        //                    + issue.Value.Summary.Trim() + "|" + issue.Value["Epic Link"] + "|" + issue.Value["Grupo de Actividad"] + "|" + issue.Value["Sprint"] + "|" + issue.Value.ParentIssueKey
+        //                    + "|" + issue.Value["Origen del error"] + "|" + issue.Value["Fase detectado"] + "|" + (issue.Value.CustomFields[0].Name == "Cliente" ? issue.Value.CustomFields[0].Values[0] : "") + "|" + issue.Value["Marco Producto"]);
 
-                    //Notificar("Consultando Enlace...");
-                    await GetLinkForIssue(issue.Key);
-                    //Notificar("Enlace cargado!");
-                }
+        //            //Notificar("Consultando Enlace...");
+        //            await GetLinkForIssue(issue.Key);
+        //            //Notificar("Enlace cargado!");
+        //        }
 
-            }
-            catch (Exception ex)
-            {
-                ex.Data.Clear();
-            }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ex.Data.Clear();
+        //    }
 
-            MTablasIn objTablasIn = new MTablasIn();
-            resultado = objTablasIn.Grabar_InJiras(DateTime.Parse("XXXX"), DateTime.Parse("XXXX"));
-            //Notificar("Jira Grabado...");
+        //    MTablasIn objTablasIn = new MTablasIn();
+        //    resultado = objTablasIn.Grabar_InJiras(DateTime.Parse("XXXX"), DateTime.Parse("XXXX"));
+        //    //Notificar("Jira Grabado...");
 
-            objTablasIn = null;
-            return resultado;
-        }
+        //    objTablasIn = null;
+        //    return resultado;
+        //}
 
         /// <summary>
         /// Retorna los jiras del proyecto
         /// </summary>
         /// <param name="FechaDesde">Formato yyyy/mm/dd hh:mm.</param>
         /// <param name="FechaHasta">Formato yyyy/mm/dd hh:mm.</param>        
-        public async Task<int> GetIssues(string FechaDesde = "", string FechaHasta = "", bool v_ultimos = false)
-        {
-            int resultado = 0;
-            try
-            {
-                string strPathFile = "";
-                string strPathFileEnlacesJira = "";
-                string strPathFileJira = "";
-                string strPathFileJiraAdic = "";
-                string strPathFileJiraAdicGdd = "";
-                string strPathFileWorkLogs = "";
-                bool ArchivoBorrado = false;
+        //public async Task<int> GetIssues(string FechaDesde = "", string FechaHasta = "", bool v_ultimos = false)
+        //{
+        //    int resultado = 0;
+        //    try
+        //    {
+        //        string strPathFile = "";
+        //        string strPathFileEnlacesJira = "";
+        //        string strPathFileJira = "";
+        //        string strPathFileJiraAdic = "";
+        //        string strPathFileJiraAdicGdd = "";
+        //        string strPathFileWorkLogs = "";
+        //        bool ArchivoBorrado = false;
 
-                if (!this.HorarioValido)
-                {
-                    return -1;
-                }
+        //        if (!this.HorarioValido)
+        //        {
+        //            return -1;
+        //        }
 
-                MParametros objParametro = new MParametros();
+        //        MParametros objParametro = new MParametros();
 
-                strPathFile = objParametro.ObtenerParametro("Pathfiles");
+        //        strPathFile = objParametro.ObtenerParametro("Pathfiles");
 
-                strPathFileEnlacesJira = strPathFile + "enlaces.txt";
-                strPathFileJira = strPathFile + "jiras.txt";
-                strPathFileJiraAdic = strPathFile + "jiras_adic.txt";
-                strPathFileJiraAdicGdd = strPathFile + "jiras_adic_gdd.txt";
-                strPathFileWorkLogs = strPathFile + "worklogs.txt";
-                //---------------------------------------------- NUEVOS JIRAS ----------------------------------
-                //Notificar("Obteniendo Jiras...");
+        //        strPathFileEnlacesJira = strPathFile + "enlaces.txt";
+        //        strPathFileJira = strPathFile + "jiras.txt";
+        //        strPathFileJiraAdic = strPathFile + "jiras_adic.txt";
+        //        strPathFileJiraAdicGdd = strPathFile + "jiras_adic_gdd.txt";
+        //        strPathFileWorkLogs = strPathFile + "worklogs.txt";
+        //        //---------------------------------------------- NUEVOS JIRAS ----------------------------------
+        //        //Notificar("Obteniendo Jiras...");
 
-                int cantOk = 0;
-                int cantError = 0;
-                MTablasIn objJirasNuevos = new MTablasIn();
-                string Jiras_key = objJirasNuevos.Obtener_JirasKeyActualizar(v_ultimos);
+        //        int cantOk = 0;
+        //        int cantError = 0;
+        //        MTablasIn objJirasNuevos = new MTablasIn();
+        //        string Jiras_key = objJirasNuevos.Obtener_JirasKeyActualizar(v_ultimos);
 
-                //obtengo jiras epicos despues de la primera ejecucion de jiras nuevos
-                string Jiras_keyEpic = "";
-                if (v_ultimos == true)
-                {
-                    Jiras_keyEpic = objJirasNuevos.Obtener_EpicasActualizar();
-                }
+        //        //obtengo jiras epicos despues de la primera ejecucion de jiras nuevos
+        //        string Jiras_keyEpic = "";
+        //        if (v_ultimos == true)
+        //        {
+        //            Jiras_keyEpic = objJirasNuevos.Obtener_EpicasActualizar();
+        //        }
 
-                if (Jiras_key == "" && Jiras_keyEpic == "")
-                {
-                    //Notificar("GetIssues(): NO HAY JIRAS PARA ACTUALIZAR!!!");
-                }
-                else
-                {
-                    Array A_Jiras_key = Jiras_key.Split(',').ToArray();
-                    Array A_Jiras_key_Epica = Jiras_keyEpic.Split(',').ToArray();
-
-
-                    var NewIssueKeys = new List<string>((string[])A_Jiras_key);
-                    var NewEpicKeys = new List<string>((string[])A_Jiras_key_Epica);
-
-                    if (v_ultimos == true)
-                    {
-                        var EpicKeys = new List<string>();
-
-                        //busco los hijos de cada epica
-                        foreach (string IssueKey in NewEpicKeys)
-                        {
-                            //ingreso al padre para ser consultado
-                            EpicKeys.Add(IssueKey);
-
-                            //busco a los hijos
-                            List<string> tmpEpicKeys = SearchEpicJiraAsync(IssueKey);
-                            //ingreso a los hijos
-                            foreach (string epic in tmpEpicKeys)
-                            {
-                                EpicKeys.Add(epic);
-                            }
-                        }
-
-                        //Cargo los jiras de la ejecucion anterior (v_ultimos=false) para verificar de no duplicar las key
-                        string Jiras_key_Anterior = objJirasNuevos.Obtener_JirasKeyEjecucionAnterior();
-                        Array A_Jiras_key_Anterior = Jiras_key_Anterior.Split(',').ToArray();
-                        var NewIssueKeys_Anterior = new List<string>((string[])A_Jiras_key_Anterior);
-
-                        //agrego la key del jira siempre y cuando no este en los arrays de ejecuciones
-                        foreach (string epic in EpicKeys)
-                        {
-
-                            if (!NewIssueKeys.Contains(epic) && !NewIssueKeys_Anterior.Contains(epic))
-                                NewIssueKeys.Add(epic);
-                        }
-                    }
-
-                    resultado = NewIssueKeys.Count();
-                    foreach (string IssueKey in NewIssueKeys)
-                    {
-                        if (IssueKey != "")
-                        {
-                            // if (IssueKey.Trim() == "EMX3051-179") System.Diagnostics.Debugger.Break();
-
-                            try
-                            {
-                                if (v_ultimos)
-                                    ArchivoBorrado = v_ultimos;
-
-                                if (ArchivoBorrado == false)
-                                {
-                                    //File.Delete(strPathFileEnlacesJira);
-                                    File.WriteAllText(strPathFileEnlacesJira, string.Empty);
-
-                                    //File.Delete(strPathFileJira);
-                                    File.WriteAllText(strPathFileJira, string.Empty);
-
-                                    //File.Delete(strPathFileJiraAdic);
-                                    File.WriteAllText(strPathFileJiraAdic, string.Empty);
-
-                                    //File.Delete(strPathFileJiraAdicGdd);
-                                    File.WriteAllText(strPathFileJiraAdicGdd, string.Empty);
-
-                                    //File.Delete(strPathFileWorkLogs);
-                                    File.WriteAllText(strPathFileWorkLogs, string.Empty);
-
-                                    ArchivoBorrado = true;
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                Utilidades.LogService("Error Carga GetIssues(): " + "ERROR, NO SE PUDO ELIMINAR " + strPathFileJira + " ERROR: " + ex.Message);
-                            }
-                            AddAtlassianGotJiraJiras.AddJira issue = new AddAtlassianGotJiraJiras.AddJira();
-                            try
-                            {
-
-                                issue = new AddAtlassianGotJiraJiras.AddJira();
-                                issue = SearchJiraAsync(IssueKey);
-
-                                if (issue.key == null) continue;
-                                //SaveIssueToFile(issue);
-                                SaveIssueToFile((dynamic)issue);
-
-                                cantOk++;
-                            }
-                            catch (Exception t)
-                            {
-                                t.Data.Clear();
-                                cantError++;
-                            }
-
-                            //obtengo los enlaces de este jira                        
-                            await GetLinkForIssue(IssueKey);
-
-                            //SE OBTIENEN LAS HORAS DE ESTE JIRA:
-                            await GetWorklogAsync(issue.fields.project.key, issue.key, issue.fields.summary, issue.fields.issuetype.name, issue.fields.priority.name);
-
-                            issue = null;
-                        }
-                    }
-
-                    objJirasNuevos = null;
-                }
-                //Notificar("Jiras Erroneos: " + cantError.ToString());
-                //Notificar("Jiras OK: " + cantOk.ToString());
-                //---------------------------------------------- FIN NUEVOS JIRAS ----------------------------------
-
-                //MTablasIn objTablasIn = new MTablasIn();
-                //resultado = objTablasIn.Grabar_InJiras(Desde, DateTime.Parse(FechaHasta));
-                //Notificar("Jiras Grabados...");
+        //        if (Jiras_key == "" && Jiras_keyEpic == "")
+        //        {
+        //            //Notificar("GetIssues(): NO HAY JIRAS PARA ACTUALIZAR!!!");
+        //        }
+        //        else
+        //        {
+        //            Array A_Jiras_key = Jiras_key.Split(',').ToArray();
+        //            Array A_Jiras_key_Epica = Jiras_keyEpic.Split(',').ToArray();
 
 
+        //            var NewIssueKeys = new List<string>((string[])A_Jiras_key);
+        //            var NewEpicKeys = new List<string>((string[])A_Jiras_key_Epica);
 
-                //objParametro.SetearParametro("FecUltimaEjec", FechaHasta);
+        //            if (v_ultimos == true)
+        //            {
+        //                var EpicKeys = new List<string>();
 
-                //// LA SIGUIENTE EJECUCION SE HARA:
-                //// DESDE LA HORA FIN QUE "TERMINA EL PROCESO" + N CANTIDAD DE HORAS (PARAMETRO)
-                //FecProximaEjec = this.FechaServer;
-                //FecProximaEjec = FecProximaEjec.AddHours(this.IntervaloExec);
-                //FechaHasta = FecProximaEjec.Year.ToString() + "/" + Formating(FecProximaEjec.Month) + "/" + Formating(FecProximaEjec.Day) + " " + Formating(FecProximaEjec.Hour) + ":" + Formating(FecProximaEjec.Minute);                       
+        //                //busco los hijos de cada epica
+        //                foreach (string IssueKey in NewEpicKeys)
+        //                {
+        //                    //ingreso al padre para ser consultado
+        //                    EpicKeys.Add(IssueKey);
 
-                //objParametro.SetearParametro("FecProximaEjec", FechaHasta);
+        //                    //busco a los hijos
+        //                    List<string> tmpEpicKeys = SearchEpicJiraAsync(IssueKey);
+        //                    //ingreso a los hijos
+        //                    foreach (string epic in tmpEpicKeys)
+        //                    {
+        //                        EpicKeys.Add(epic);
+        //                    }
+        //                }
 
-                //// Este metodo solo se llama en la ultima ejecucion del dia.
-                //// Si la hora para la proxima ejecucion no es valida, quiere decir que esta es la ultima ejecucion
-                //// por lo que el proceso debe ser ejecutado...
-                //if (!EsHorarioValido(FecProximaEjec))
-                //{
-                //    PrecalculoIndicadoresProyecto();
-                //}
+        //                //Cargo los jiras de la ejecucion anterior (v_ultimos=false) para verificar de no duplicar las key
+        //                string Jiras_key_Anterior = objJirasNuevos.Obtener_JirasKeyEjecucionAnterior();
+        //                Array A_Jiras_key_Anterior = Jiras_key_Anterior.Split(',').ToArray();
+        //                var NewIssueKeys_Anterior = new List<string>((string[])A_Jiras_key_Anterior);
 
-                //objTablasIn = null;
-                objParametro = null;
-            }
-            catch (Exception ex)
-            {
-                // Get stack trace for the exception with source file information
-                StackTrace st = new StackTrace(ex, true);
-                // Get the top stack frame
-                StackFrame frame = st.GetFrame(0);
-                // Get the line number from the stack frame
-                int line = frame.GetFileLineNumber();
+        //                //agrego la key del jira siempre y cuando no este en los arrays de ejecuciones
+        //                foreach (string epic in EpicKeys)
+        //                {
 
-                string clase = frame.GetFileName().Split('\\').Last();
-                string metodo = frame.GetMethod().Name;
-                await Task.Run(() => Utilidades.LogService("Error GetIssues() Clase: " + clase + " Método(): " + metodo + " Linea: " + line + " Error: " + ex.Message));
-            }
-            finally
-            {
-                if (v_ultimos)
-                    await Task.Run(() => Utilidades.LogService("GetIssues(): FIN"));
-            }
+        //                    if (!NewIssueKeys.Contains(epic) && !NewIssueKeys_Anterior.Contains(epic))
+        //                        NewIssueKeys.Add(epic);
+        //                }
+        //            }
 
-            return resultado;
-        }
+        //            resultado = NewIssueKeys.Count();
+        //            foreach (string IssueKey in NewIssueKeys)
+        //            {
+        //                if (IssueKey != "")
+        //                {
+        //                    // if (IssueKey.Trim() == "EMX3051-179") System.Diagnostics.Debugger.Break();
+
+        //                    try
+        //                    {
+        //                        if (v_ultimos)
+        //                            ArchivoBorrado = v_ultimos;
+
+        //                        if (ArchivoBorrado == false)
+        //                        {
+        //                            //File.Delete(strPathFileEnlacesJira);
+        //                            File.WriteAllText(strPathFileEnlacesJira, string.Empty);
+
+        //                            //File.Delete(strPathFileJira);
+        //                            File.WriteAllText(strPathFileJira, string.Empty);
+
+        //                            //File.Delete(strPathFileJiraAdic);
+        //                            File.WriteAllText(strPathFileJiraAdic, string.Empty);
+
+        //                            //File.Delete(strPathFileJiraAdicGdd);
+        //                            File.WriteAllText(strPathFileJiraAdicGdd, string.Empty);
+
+        //                            //File.Delete(strPathFileWorkLogs);
+        //                            File.WriteAllText(strPathFileWorkLogs, string.Empty);
+
+        //                            ArchivoBorrado = true;
+        //                        }
+        //                    }
+        //                    catch (Exception ex)
+        //                    {
+        //                        Utilidades.LogService("Error Carga GetIssues(): " + "ERROR, NO SE PUDO ELIMINAR " + strPathFileJira + " ERROR: " + ex.Message);
+        //                    }
+        //                    AddAtlassianGotJiraJiras.AddJira issue = new AddAtlassianGotJiraJiras.AddJira();
+        //                    try
+        //                    {
+
+        //                        issue = new AddAtlassianGotJiraJiras.AddJira();
+        //                        issue = SearchJiraAsync(IssueKey);
+
+        //                        if (issue.key == null) continue;
+        //                        //SaveIssueToFile(issue);
+        //                        SaveIssueToFile((dynamic)issue);
+
+        //                        cantOk++;
+        //                    }
+        //                    catch (Exception t)
+        //                    {
+        //                        t.Data.Clear();
+        //                        cantError++;
+        //                    }
+
+        //                    //obtengo los enlaces de este jira                        
+        //                    await GetLinkForIssue(IssueKey);
+
+        //                    //SE OBTIENEN LAS HORAS DE ESTE JIRA:
+        //                    await GetWorklogAsync(issue.fields.project.key, issue.key, issue.fields.summary, issue.fields.issuetype.name, issue.fields.priority.name);
+
+        //                    issue = null;
+        //                }
+        //            }
+
+        //            objJirasNuevos = null;
+        //        }
+        //        //Notificar("Jiras Erroneos: " + cantError.ToString());
+        //        //Notificar("Jiras OK: " + cantOk.ToString());
+        //        //---------------------------------------------- FIN NUEVOS JIRAS ----------------------------------
+
+        //        //MTablasIn objTablasIn = new MTablasIn();
+        //        //resultado = objTablasIn.Grabar_InJiras(Desde, DateTime.Parse(FechaHasta));
+        //        //Notificar("Jiras Grabados...");
+
+
+
+        //        //objParametro.SetearParametro("FecUltimaEjec", FechaHasta);
+
+        //        //// LA SIGUIENTE EJECUCION SE HARA:
+        //        //// DESDE LA HORA FIN QUE "TERMINA EL PROCESO" + N CANTIDAD DE HORAS (PARAMETRO)
+        //        //FecProximaEjec = this.FechaServer;
+        //        //FecProximaEjec = FecProximaEjec.AddHours(this.IntervaloExec);
+        //        //FechaHasta = FecProximaEjec.Year.ToString() + "/" + Formating(FecProximaEjec.Month) + "/" + Formating(FecProximaEjec.Day) + " " + Formating(FecProximaEjec.Hour) + ":" + Formating(FecProximaEjec.Minute);                       
+
+        //        //objParametro.SetearParametro("FecProximaEjec", FechaHasta);
+
+        //        //// Este metodo solo se llama en la ultima ejecucion del dia.
+        //        //// Si la hora para la proxima ejecucion no es valida, quiere decir que esta es la ultima ejecucion
+        //        //// por lo que el proceso debe ser ejecutado...
+        //        //if (!EsHorarioValido(FecProximaEjec))
+        //        //{
+        //        //    PrecalculoIndicadoresProyecto();
+        //        //}
+
+        //        //objTablasIn = null;
+        //        objParametro = null;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Get stack trace for the exception with source file information
+        //        StackTrace st = new StackTrace(ex, true);
+        //        // Get the top stack frame
+        //        StackFrame frame = st.GetFrame(0);
+        //        // Get the line number from the stack frame
+        //        int line = frame.GetFileLineNumber();
+
+        //        string clase = frame.GetFileName().Split('\\').Last();
+        //        string metodo = frame.GetMethod().Name;
+        //        await Task.Run(() => Utilidades.LogService("Error GetIssues() Clase: " + clase + " Método(): " + metodo + " Linea: " + line + " Error: " + ex.Message));
+        //    }
+        //    finally
+        //    {
+        //        if (v_ultimos)
+        //            await Task.Run(() => Utilidades.LogService("GetIssues(): FIN"));
+        //    }
+
+        //    return resultado;
+        //}
 
         /// <summary>
         /// Eliminacion de Worklogs
@@ -1986,6 +1987,113 @@ namespace GotJira
             }
             if (Complejidad == null) Complejidad = "";
 
+
+            // pedido por Analia (customfield_19130)    FALTA RESOLVER
+            string SoporteAsignadoA = "";
+            try
+            {
+                if(issue.fields.customfield_19130 != null)
+                {
+                    issue.fields.customfield_19130.ForEach(sa =>
+                    {
+                        SoporteAsignadoA = sa.value;
+                        SoporteAsignadoA = SoporteAsignadoA + "|";
+                    });
+                    SoporteAsignadoA = SoporteAsignadoA.Substring(0, SoporteAsignadoA.Length - 1);
+                }                
+            }
+            catch (Exception x) { x.Data.Clear(); }
+
+            //if (issue.fields?.customfield_19130 != null)
+            //{                
+            //    try { SoporteAsignadoA = issue.fields.customfield_19130?.value.ToString(); } catch (Exception x) { x.Data.Clear(); }
+            //}
+            //if (SoporteAsignadoA == null) SoporteAsignadoA = "";
+
+            // pedido por Analia (customfield_18960)
+
+
+            string Resolutor = "";
+            if (issue.fields?.customfield_18960 != null)
+            {
+                try { Resolutor = issue.fields.customfield_18960?.displayName.ToString(); } catch (Exception x) { x.Data.Clear(); }
+            }
+            if (Resolutor == null) Resolutor = "";
+
+            // pedido por Analia (customfield_18849)
+            string Ambiente = "";
+            if (issue.fields?.customfield_18849 != null)
+            {
+                try { Ambiente = issue.fields.customfield_18849?.value.ToString(); } catch (Exception x) { x.Data.Clear(); }
+            }
+            if (Ambiente == null) Ambiente = "";
+
+            // pedido por Analia (customfield_18916)
+            string Entorno = "";
+            if (issue.fields?.customfield_18916 != null)
+            {
+                try { Entorno = issue.fields.customfield_18916?.value.ToString(); } catch (Exception x) { x.Data.Clear(); }
+            }
+            if (Entorno == null) Entorno = "";
+
+
+            // pedido por Analia (customfield_18998)
+            string InformacionInsuficiente = "";
+            if (issue.fields?.customfield_18998 != null)
+            {
+                try { InformacionInsuficiente = issue.fields.customfield_18998?.value.ToString(); } catch (Exception x) { x.Data.Clear(); }
+            }
+            if (InformacionInsuficiente == null) InformacionInsuficiente = "";
+
+            // pedido por Analia (customfield_19031)
+            string PriorizadoGPD = "";
+            if (issue.fields?.customfield_19031 != null)
+            {
+                try { PriorizadoGPD = issue.fields.customfield_19031?.value.ToString(); } catch (Exception x) { x.Data.Clear(); }
+            }
+            if (PriorizadoGPD == null) PriorizadoGPD = "";
+
+            // pedido por Analia (customfield_19064) FALTA RESOLVER
+            string IndicarSiEsCore = "";
+            try
+            {
+                if(issue.fields.customfield_19064 != null)
+                {
+                    issue.fields.customfield_19064.ForEach(isec =>
+                    {
+                        IndicarSiEsCore = isec.value;
+                        IndicarSiEsCore = IndicarSiEsCore + "|";
+                    });
+                    IndicarSiEsCore = IndicarSiEsCore.Substring(0, IndicarSiEsCore.Length - 1);
+                }                
+            }
+            catch (Exception x) { x.Data.Clear(); }
+
+            //if (issue.fields?.customfield_19064 != null)
+            //{
+            //    try { IndicarSiEsCore = issue.fields.customfield_19064?.value.ToString(); } catch (Exception x) { x.Data.Clear(); }
+            //}
+            //if (IndicarSiEsCore == null) IndicarSiEsCore = "";
+
+
+            // pedido por Analia (customfield_19097) FALTA RESOLVER
+            string JiraControlInterno = "";
+            if (issue.fields.customfield_19097 != null)
+            {
+                issue.fields.customfield_19097.ForEach(jci =>
+                {
+                    JiraControlInterno = jci.value;
+                    JiraControlInterno = JiraControlInterno + "|";
+                });
+                JiraControlInterno = JiraControlInterno.Substring(0, JiraControlInterno.Length - 1);
+            }
+
+            //if (issue.fields?.customfield_19097 != null)
+            //{
+            //    try { JiraControlInterno = issue.fields.customfield_19097?.value.ToString(); } catch (Exception x) { x.Data.Clear(); }
+            //}
+            //if (JiraControlInterno == null) JiraControlInterno = "";
+
             //datos adicionales del jira
             try
             {
@@ -1998,7 +2106,7 @@ namespace GotJira
                 Resolutiondate = issue?.fields?.resolutiondate;
                 LastViewed = issue?.fields?.lastViewed;
 
-                Utilidades.SaveFile(strPathFileJiraAdic, issue.key + "|" + Created + "|" + Updated + "|" + Resolutiondate + "|" + LastViewed + "|" + AreaSolicitante.Replace("|", "") + "|" + Informador + "|" + Calificacion.Replace("|", "") + "|" + TipoSolicitudMDA + "|" + CustomCategoria + "|" + Assignee + "|" + TipoFalla + "|" + MotivoDePendiente + "|" + SLA1 + "|" + SLA2 + "|" + SLA3 + "|" + SLA4 + "|" + Cliente + "|" + Origen2 + "|" + Producto + "|" + NroOportunidad + "|" + TipoSoporte + "|" + CausaRaiz + "|" + NivelResolucion + "|" + TipoRiesgo + "|" + ProcesoVinculado + "|" + Probabilidad + "|" + ImpactoRyo + "|" + EstrategiaRyo + "|" + Impacto + "|" + Influencia + "|" + Estrategia + "|" + ClasificacionContexto + "|" + Origen_2 + "|" + OrigenHallazgo + "|" + AccionCorrectivaCuando + "|" + FechaVerificacionEficacia + "|" + Complejidad);
+                Utilidades.SaveFile(strPathFileJiraAdic, issue.key + "|" + Created + "|" + Updated + "|" + Resolutiondate + "|" + LastViewed + "|" + AreaSolicitante.Replace("|", "") + "|" + Informador + "|" + Calificacion.Replace("|", "") + "|" + TipoSolicitudMDA + "|" + CustomCategoria + "|" + Assignee + "|" + TipoFalla + "|" + MotivoDePendiente + "|" + SLA1 + "|" + SLA2 + "|" + SLA3 + "|" + SLA4 + "|" + Cliente + "|" + Origen2 + "|" + Producto + "|" + NroOportunidad + "|" + TipoSoporte + "|" + CausaRaiz + "|" + NivelResolucion + "|" + TipoRiesgo + "|" + ProcesoVinculado + "|" + Probabilidad + "|" + ImpactoRyo + "|" + EstrategiaRyo + "|" + Impacto + "|" + Influencia + "|" + Estrategia + "|" + ClasificacionContexto + "|" + Origen_2 + "|" + OrigenHallazgo + "|" + AccionCorrectivaCuando + "|" + FechaVerificacionEficacia + "|" + Complejidad + "|" + SoporteAsignadoA + "|" + Resolutor + "|" + Ambiente + "|" + Entorno + "|" + InformacionInsuficiente + "|" + PriorizadoGPD + "|" + IndicarSiEsCore + "|" + JiraControlInterno);
             }
             catch (Exception F)
             {
@@ -2093,34 +2201,34 @@ namespace GotJira
             return _return;
         }
 
-        public async Task SincronizaEnlaces()
-        {
-            try
-            {
-                //Notificar("Sincronización de Enlaces Inicio");
-                MTablasIn objJirasEnlaces = new MTablasIn();
-                string Jiras_key = objJirasEnlaces.Obtener_JirasAEnlazar();
-                if (Jiras_key == "")
-                {
-                    //Notificar("Sincronización de Enlaces: No se obtuvieron Jiras");
-                }
-                else
-                {
-                    Array A_Jiras_key = Jiras_key.Split(',').ToArray();
-                    var IssueKeys = new List<string>((string[])A_Jiras_key);
-                    await GetLinkForIssues(IssueKeys);
-                    objJirasEnlaces = null;
-                }
-                //Notificar("Sincronización de Enlaces Finalizado");
+        //public async Task SincronizaEnlaces()
+        //{
+        //    try
+        //    {
+        //        //Notificar("Sincronización de Enlaces Inicio");
+        //        MTablasIn objJirasEnlaces = new MTablasIn();
+        //        string Jiras_key = objJirasEnlaces.Obtener_JirasAEnlazar();
+        //        if (Jiras_key == "")
+        //        {
+        //            //Notificar("Sincronización de Enlaces: No se obtuvieron Jiras");
+        //        }
+        //        else
+        //        {
+        //            Array A_Jiras_key = Jiras_key.Split(',').ToArray();
+        //            var IssueKeys = new List<string>((string[])A_Jiras_key);
+        //            await GetLinkForIssues(IssueKeys);
+        //            objJirasEnlaces = null;
+        //        }
+        //        //Notificar("Sincronización de Enlaces Finalizado");
 
-            }
-            catch (Exception ex)
-            {
-                //Notificar("Sincronización de Enlaces Error: " + ex.Message);
-                throw ex;
-            }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        //Notificar("Sincronización de Enlaces Error: " + ex.Message);
+        //        throw ex;
+        //    }
 
-        }
+        //}
 
         private async Task<AddIssueLnk> GetLinksForIssueAsync(string IssueKey)
         {
@@ -2133,7 +2241,7 @@ namespace GotJira
             //request.AddHeader("Cookie", "atlassian.xsrf.token=B5S9-YRZO-3SUG-U7W9_05fa5ac255df7ea7bb7a3f9a0e5367b5a08ada15_lin");
             request.AddHeader("Host", "softoffice.atlassian.net");
             request.AddHeader("Cache-Control", "no-cache");
-            request.AddHeader("Authorization", "Basic amlyYS5lbXhAZ21haWwuY29tOjVSNlIzVjhiM0hNR1ZmTXFSUUVqMTFDNQ==");
+            request.AddHeader("Authorization", $"Basic {authToken}");
             IRestResponse response = await client.ExecuteAsync(request);
             AddIssueLnk LxI = new AddIssueLnk();
 
@@ -2163,7 +2271,7 @@ namespace GotJira
             var request = new RestRequest(Method.GET);
             request.AddHeader("Host", "softoffice.atlassian.net");
             request.AddHeader("Cache-Control", "no-cache");
-            request.AddHeader("Authorization", "Basic amlyYS5lbXhAZ21haWwuY29tOjVSNlIzVjhiM0hNR1ZmTXFSUUVqMTFDNQ==");
+            request.AddHeader("Authorization", $"Basic {authToken}");
             IRestResponse response = await client.ExecuteAsync(request);
             Add_Worklogs_Deleted Wlk = new Add_Worklogs_Deleted();
             MTablasIn objTablasIn = new MTablasIn();
@@ -2260,71 +2368,71 @@ namespace GotJira
             objParametro = null;
         }
 
-        private async Task GetLinkForIssues(List<string> IssueKeys)
-        {
-            IssueKeys = IssueKeys.Distinct().ToList();
-            MParametros objParametro = new MParametros();
+        //private async Task GetLinkForIssues(List<string> IssueKeys)
+        //{
+        //    IssueKeys = IssueKeys.Distinct().ToList();
+        //    MParametros objParametro = new MParametros();
 
-            int Cantidad = 0;
-            string strPathFile = "";
-            strPathFile = objParametro.ObtenerParametro("Pathfiles");
-            strPathFile = strPathFile + "enlaces.txt";
+        //    int Cantidad = 0;
+        //    string strPathFile = "";
+        //    strPathFile = objParametro.ObtenerParametro("Pathfiles");
+        //    strPathFile = strPathFile + "enlaces.txt";
 
-            //CancellationToken token = default(CancellationToken);
-            bool eliminoArchivo = false;
-            AddIssueLnk LxI = new AddIssueLnk();
-            foreach (string key in IssueKeys)
-            {
-                try
-                {
-                    //issueFunction in hasLinks()
-                    //token = default(CancellationToken);
+        //    //CancellationToken token = default(CancellationToken);
+        //    bool eliminoArchivo = false;
+        //    AddIssueLnk LxI = new AddIssueLnk();
+        //    foreach (string key in IssueKeys)
+        //    {
+        //        try
+        //        {
+        //            //issueFunction in hasLinks()
+        //            //token = default(CancellationToken);
 
-                    LxI = new AddIssueLnk();
-                    //busco los links por cada jira
-                    try
-                    {
-                        //LxI = await jiraConn.Links.GetLinksForIssueAsync(key.ToString(), token);
-                        LxI = await GetLinksForIssueAsync(key.ToString());
-                    }
-                    catch (Exception ex)
-                    {
-                        ex.Data.Clear();
-                    }
+        //            LxI = new AddIssueLnk();
+        //            //busco los links por cada jira
+        //            try
+        //            {
+        //                //LxI = await jiraConn.Links.GetLinksForIssueAsync(key.ToString(), token);
+        //                LxI = await GetLinksForIssueAsync(key.ToString());
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                ex.Data.Clear();
+        //            }
 
-                    Cantidad = LxI.fields.issuelinks.Count();
-                    if (Cantidad > 0 && !eliminoArchivo)
-                    {
-                        //File.Delete(strPathFile);
-                        File.WriteAllText(strPathFile, string.Empty);
-                        eliminoArchivo = true;
-                    }
+        //            Cantidad = LxI.fields.issuelinks.Count();
+        //            if (Cantidad > 0 && !eliminoArchivo)
+        //            {
+        //                //File.Delete(strPathFile);
+        //                File.WriteAllText(strPathFile, string.Empty);
+        //                eliminoArchivo = true;
+        //            }
 
-                    foreach (var issuelinks in LxI.fields.issuelinks)
-                    {
-                        if (issuelinks.outwardIssue != null)
-                        {
-                            Utilidades.SaveFile(strPathFile, LxI.key + "|" + issuelinks.outwardIssue.key);
-                        }
+        //            foreach (var issuelinks in LxI.fields.issuelinks)
+        //            {
+        //                if (issuelinks.outwardIssue != null)
+        //                {
+        //                    Utilidades.SaveFile(strPathFile, LxI.key + "|" + issuelinks.outwardIssue.key);
+        //                }
 
-                    }
+        //            }
 
-                    LxI = null;
-                }
-                catch (Exception ex)
-                {
-                    Utilidades.LogService("Error Carga GetLinkForIssue(): " + ex.Message);
-                    ex.Data.Clear();
-                }
-            }
+        //            LxI = null;
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            Utilidades.LogService("Error Carga GetLinkForIssue(): " + ex.Message);
+        //            ex.Data.Clear();
+        //        }
+        //    }
 
-            Utilidades.LogService("GetLinkForIssue(): FIN");
-            //MTablasIn objTablasIn = new MTablasIn();
-            //objTablasIn.Grabar_InEnlaces();
-            objParametro = null;
-            //objTablasIn = null;
-            //return true;
-        }
+        //    Utilidades.LogService("GetLinkForIssue(): FIN");
+        //    //MTablasIn objTablasIn = new MTablasIn();
+        //    //objTablasIn.Grabar_InEnlaces();
+        //    objParametro = null;
+        //    //objTablasIn = null;
+        //    //return true;
+        //}
 
         public async Task GetUsers()
         {
@@ -2533,40 +2641,40 @@ namespace GotJira
         /// <summary>
         /// Metodo Propio, retorna el jira solicitado deserializando un json
         /// </summary>
-        private AddAtlassianGotJiraJiras.AddJira SearchJiraAsync(string issueKey)
-        {
-            AddAtlassianGotJiraJiras.AddJira obj = new AddAtlassianGotJiraJiras.AddJira();
-            if (issueKey.Trim() == "") return obj;
+        //private AddAtlassianGotJiraJiras.AddJira SearchJiraAsync(string issueKey)
+        //{
+        //    AddAtlassianGotJiraJiras.AddJira obj = new AddAtlassianGotJiraJiras.AddJira();
+        //    if (issueKey.Trim() == "") return obj;
 
-            var client = new RestClient("https://softoffice.atlassian.net/rest/api/2/issue/" + issueKey.Trim());
-            //var client = new RestClient("https://softoffice.atlassian.net/rest/api/latest/issue/" + issueKey);
+        //    var client = new RestClient("https://softoffice.atlassian.net/rest/api/2/issue/" + issueKey.Trim());
+        //    //var client = new RestClient("https://softoffice.atlassian.net/rest/api/latest/issue/" + issueKey);
 
-            var request = new RestRequest(Method.GET);
-            request.AddHeader("Host", "softoffice.atlassian.net");
-            request.AddHeader("Cache-Control", "no-cache");
-            request.AddHeader("Authorization", "Basic amlyYS5lbXhAZ21haWwuY29tOjVSNlIzVjhiM0hNR1ZmTXFSUUVqMTFDNQ==");
-            IRestResponse response = client.Execute(request);
+        //    var request = new RestRequest(Method.GET);
+        //    request.AddHeader("Host", "softoffice.atlassian.net");
+        //    request.AddHeader("Cache-Control", "no-cache");
+        //    request.AddHeader("Authorization", $"Basic {authToken}");
+        //    IRestResponse response = client.Execute(request);
 
-            if (response.IsSuccessful)
-            {
-                var result = response.Content;
+        //    if (response.IsSuccessful)
+        //    {
+        //        var result = response.Content;
 
-                try
-                {
-                    obj = JsonConvert.DeserializeObject<AddAtlassianGotJiraJiras.AddJira>(result);
-                }
-                catch (Exception ex)
-                {
-                    Utilidades.LogService("Error AddAtlassianGotJira() " + issueKey + ": " + ex.Message);
-                }
-            }
-            else
-            {
-                Utilidades.JirasErrores(issueKey, response.Content);
-                return obj;
-            }
-            return obj;
-        }
+        //        try
+        //        {
+        //            obj = JsonConvert.DeserializeObject<AddAtlassianGotJiraJiras.AddJira>(result);
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            Utilidades.LogService("Error AddAtlassianGotJira() " + issueKey + ": " + ex.Message);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        Utilidades.JirasErrores(issueKey, response.Content);
+        //        return obj;
+        //    }
+        //    return obj;
+        //}
 
         /// <summary>
         /// Metodo Propio, retorna el jiras deserializando un json, Filtros: startAt, fecha_desde, fecha_hasta
@@ -2634,7 +2742,7 @@ namespace GotJira
             request.Method = "POST";
             //request.Headers.Add("Host", "softoffice.atlassian.net");
             request.Headers.Add("Cache-Control", "no-cache");
-            request.Headers.Add("Authorization", "Basic amlyYS5lbXhAZ21haWwuY29tOjVSNlIzVjhiM0hNR1ZmTXFSUUVqMTFDNQ==");
+            request.Headers.Add("Authorization", $"Basic {authToken}");
             request.ContentType = "application/json";
             request.ContentLength = byteArray.Length;
 
@@ -2723,7 +2831,7 @@ namespace GotJira
             request.Method = "POST";
             //request.Headers.Add("Host", "softoffice.atlassian.net");
             request.Headers.Add("Cache-Control", "no-cache");
-            request.Headers.Add("Authorization", "Basic amlyYS5lbXhAZ21haWwuY29tOjVSNlIzVjhiM0hNR1ZmTXFSUUVqMTFDNQ==");
+            request.Headers.Add("Authorization", $"Basic {authToken}");
             request.ContentType = "application/json";
             request.ContentLength = byteArray.Length;
 
@@ -2768,49 +2876,51 @@ namespace GotJira
                     ""customfield_18895"", ""customfield_18911"", ""customfield_18926"", ""customfield_18910"", ""customfield_18914"",
                     ""customfield_18915"", ""customfield_18878"", ""customfield_13200"", ""customfield_18880"", ""customfield_18881"",
                     ""customfield_18882"", ""customfield_18872"", ""customfield_18873"", ""customfield_18874"", ""customfield_18876"",
-                    ""customfield_18875"", ""customfield_18782"", ""customfield_13111"", ""customfield_14601"", ""customfield_12402""
+                    ""customfield_18875"", ""customfield_18782"", ""customfield_13111"", ""customfield_14601"", ""customfield_12402"",
+                    ""customfield_19130"", ""customfield_18960"", ""customfield_18849"", ""customfield_18916"", ""customfield_18998"",
+                    ""customfield_19031"", ""customfield_19064"", ""customfield_19097""
                 ]
             }}";
 
             return postData;
         }
-        private List<string> SearchEpicJiraAsync(string issueKey)
-        {
-            List<string> IssueKeys = new List<string>();
-            if (issueKey.Trim() == "") return IssueKeys;
+        //private List<string> SearchEpicJiraAsync(string issueKey)
+        //{
+        //    List<string> IssueKeys = new List<string>();
+        //    if (issueKey.Trim() == "") return IssueKeys;
 
-            var client = new RestClient("https://softoffice.atlassian.net/rest/api/2/search?jql= \"Epic Link\" IN('" + issueKey + "') order by created desc");
-            client.Timeout = -1;
-            var request = new RestRequest(Method.GET);
-            request.AddHeader("Accept", "application/json");
-            request.AddHeader("Content-Type", "application/json");
-            request.AddHeader("Authorization", "Basic amlyYS5lbXhAZ21haWwuY29tOjVSNlIzVjhiM0hNR1ZmTXFSUUVqMTFDNQ==");
-            request.AddHeader("Cookie", "atlassian.xsrf.token=B5S9-YRZO-3SUG-U7W9_05fa5ac255df7ea7bb7a3f9a0e5367b5a08ada15_lin");
-            IRestResponse response = client.Execute(request);
+        //    var client = new RestClient("https://softoffice.atlassian.net/rest/api/2/search?jql= \"Epic Link\" IN('" + issueKey + "') order by created desc");
+        //    client.Timeout = -1;
+        //    var request = new RestRequest(Method.GET);
+        //    request.AddHeader("Accept", "application/json");
+        //    request.AddHeader("Content-Type", "application/json");
+        //    request.AddHeader("Authorization", $"Basic {authToken}");
+        //    request.AddHeader("Cookie", "atlassian.xsrf.token=B5S9-YRZO-3SUG-U7W9_05fa5ac255df7ea7bb7a3f9a0e5367b5a08ada15_lin");
+        //    IRestResponse response = client.Execute(request);
 
-            if (response.IsSuccessful)
-            {
+        //    if (response.IsSuccessful)
+        //    {
 
-                try
-                {
-                    var Resultado = JsonConvert.DeserializeObject<AtlassianGotJiraEpicJira.AddEpicJira>(response.Content);
-                    foreach (var issue in Resultado.issues)
-                    {
-                        IssueKeys.Add(issue.key);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Utilidades.LogService("Error SearchEpicJiraAsync() " + issueKey + ": " + ex.Message);
-                }
-            }
-            else
-            {
-                Utilidades.JirasErrores(issueKey, response.Content);
-                return IssueKeys;
-            }
-            return IssueKeys;
-        }
+        //        try
+        //        {
+        //            var Resultado = JsonConvert.DeserializeObject<AtlassianGotJiraEpicJira.AddEpicJira>(response.Content);
+        //            foreach (var issue in Resultado.issues)
+        //            {
+        //                IssueKeys.Add(issue.key);
+        //            }
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            Utilidades.LogService("Error SearchEpicJiraAsync() " + issueKey + ": " + ex.Message);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        Utilidades.JirasErrores(issueKey, response.Content);
+        //        return IssueKeys;
+        //    }
+        //    return IssueKeys;
+        //}
 
 
 
@@ -2890,39 +3000,39 @@ namespace GotJira
             return users;
         }
 
-        private async Task<JiraUser> SearchUserByAccountIdAsync(string AccountId, CancellationToken token = default(CancellationToken))
-        {
-            string resource = "";
-            resource = String.Format(
-            "rest/api/3/user/search?accountId=accountId={0}",
-            AccountId);
+        //private async Task<JiraUser> SearchUserByAccountIdAsync(string AccountId, CancellationToken token = default(CancellationToken))
+        //{
+        //    string resource = "";
+        //    resource = String.Format(
+        //    "rest/api/3/user/search?accountId=accountId={0}",
+        //    AccountId);
 
-            JiraUser search_result = await jiraConn.RestClient.ExecuteRequestAsync<JiraUser>(Method.GET, resource, null, token);
+        //    JiraUser search_result = await jiraConn.RestClient.ExecuteRequestAsync<JiraUser>(Method.GET, resource, null, token);
 
-            return search_result;
-        }
+        //    return search_result;
+        //}
 
-        private async Task<JiraUser> SearchUserByUserNameAsync(string UserName, CancellationToken token = default(CancellationToken))
-        {
-            string resource = "";
-            resource = String.Format(
-            "rest/api/3/user/search?query=username={0}",
-            UserName);
+        //private async Task<JiraUser> SearchUserByUserNameAsync(string UserName, CancellationToken token = default(CancellationToken))
+        //{
+        //    string resource = "";
+        //    resource = String.Format(
+        //    "rest/api/3/user/search?query=username={0}",
+        //    UserName);
 
-            JiraUser search_result = await jiraConn.RestClient.ExecuteRequestAsync<JiraUser>(Method.GET, resource, null, token);
+        //    JiraUser search_result = await jiraConn.RestClient.ExecuteRequestAsync<JiraUser>(Method.GET, resource, null, token);
 
-            return search_result;
-        }
+        //    return search_result;
+        //}
 
-        private Task<IEnumerable<IssueLink>> GetIssueLinksAsync(string _originalIssue, CancellationToken token = default(CancellationToken))
-        {
-            if (String.IsNullOrEmpty(_originalIssue))
-            {
-                throw new InvalidOperationException("Unable to get issue links issues, issue has not been created.");
-            }
+        //private Task<IEnumerable<IssueLink>> GetIssueLinksAsync(string _originalIssue, CancellationToken token = default(CancellationToken))
+        //{
+        //    if (String.IsNullOrEmpty(_originalIssue))
+        //    {
+        //        throw new InvalidOperationException("Unable to get issue links issues, issue has not been created.");
+        //    }
 
-            return GetLinksForIssueAsync(_originalIssue, token);
-        }
+        //    return GetLinksForIssueAsync(_originalIssue, token);
+        //}
         private async Task<IEnumerable<IssueLink>> GetLinksForIssueAsync(string issueKey, CancellationToken token)
         {
 
@@ -3032,85 +3142,85 @@ namespace GotJira
 
 
         //el AddAtlassianGotJira.RootObject.fields.worklog.worklogs solo trae 20 arreglos... no sirve... se usa GetWorklogAsync()
-        public void GetWorklog_(AddAtlassianGotJiraJiras.AddJira RootObject)
-        {
-            MParametros objParametro = new MParametros();
-            string strPathFile = "";
-            strPathFile = objParametro.ObtenerParametro("Pathfiles");
-            strPathFile = strPathFile + "worklogs.txt";
+        //public void GetWorklog_(AddAtlassianGotJiraJiras.AddJira RootObject)
+        //{
+        //    MParametros objParametro = new MParametros();
+        //    string strPathFile = "";
+        //    strPathFile = objParametro.ObtenerParametro("Pathfiles");
+        //    strPathFile = strPathFile + "worklogs.txt";
 
-            foreach (var worklog in RootObject.fields.worklog.worklogs)
-            {
+        //    foreach (var worklog in RootObject.fields.worklog.worklogs)
+        //    {
 
-                //if (worklog.id == "371168")
-                //{
-                //    string a;
-                //    a = "A";
-                //}
-
-
-                // SI VIENE ALGUN ÑUFO LO REEMPLAZO POR UN GUION
-                string summary = RootObject.fields.summary?.Replace("|", "-");
-
-                string comment = worklog.comment?.Replace("|", "-");
-
-                DateTime date_started = (DateTime)worklog.started;
-                string string_started = date_started.ToString("dd/MM/yyyy HH:mm:ss");
-
-                DateTime date_created = (DateTime)worklog.created;
-                string string_created = date_created.ToString("dd/MM/yyyy HH:mm:ss");
-
-                DateTime date_updated = (DateTime)worklog.updated;
-                string string_updated = date_updated.ToString("dd/MM/yyyy HH:mm:ss");
+        //        //if (worklog.id == "371168")
+        //        //{
+        //        //    string a;
+        //        //    a = "A";
+        //        //}
 
 
+        //        // SI VIENE ALGUN ÑUFO LO REEMPLAZO POR UN GUION
+        //        string summary = RootObject.fields.summary?.Replace("|", "-");
 
-                // Format Datetime in different formats and display them
-                //Console.WriteLine(aDate.ToString("MM/dd/yyyy"));
-                //Console.WriteLine(aDate.ToString("dddd, dd MMMM yyyy"));
-                //Console.WriteLine(aDate.ToString("dddd, dd MMMM yyyy"));
-                //Console.WriteLine(aDate.ToString("dddd, dd MMMM yyyy"));
-                //Console.WriteLine(aDate.ToString("dddd, dd MMMM yyyy"));
-                //Console.WriteLine(aDate.ToString("dddd, dd MMMM yyyy"));
-                //Console.WriteLine(aDate.ToString("dddd, dd MMMM yyyy HH:mm:ss"));
-                //Console.WriteLine(aDate.ToString("MM/dd/yyyy HH:mm"));
-                //Console.WriteLine(aDate.ToString("MM/dd/yyyy hh:mm tt"));
-                //Console.WriteLine(aDate.ToString("MM/dd/yyyy H:mm"));
-                //Console.WriteLine(aDate.ToString("MM/dd/yyyy h:mm tt"));
-                //Console.WriteLine(aDate.ToString("MM/dd/yyyy HH:mm:ss"));
-                //Console.WriteLine(aDate.ToString("MMMM dd"));
-                //Console.WriteLine(aDate.ToString("yyyy’-‘MM’-‘dd’T’HH’:’mm’:’ss.fffffffK"));
-                //Console.WriteLine(aDate.ToString("ddd, dd MMM yyy HH’:’mm’:’ss ‘GMT’"));
-                //Console.WriteLine(aDate.ToString("yyyy’-‘MM’-‘dd’T’HH’:’mm’:’ss"));
-                //Console.WriteLine(aDate.ToString("HH:mm"));
-                //Console.WriteLine(aDate.ToString("hh:mm tt"));
-                //Console.WriteLine(aDate.ToString("H:mm"));
-                //Console.WriteLine(aDate.ToString("h:mm tt"));
-                //Console.WriteLine(aDate.ToString("HH:mm:ss"));
-                //Console.WriteLine(aDate.ToString("yyyy MMMM"));
+        //        string comment = worklog.comment?.Replace("|", "-");
 
-                //var worklog = await jiraConn.Issues.GetWorklogAsync(issuKey, wk.Id, token);   
-                if (worklog.id != null)
-                    Utilidades.SaveFile(strPathFile,
-                        RootObject.fields.project.key + "|" +
-                        RootObject.key + "|" +
-                        RootObject.fields.issuetype.name + "|" +
-                        summary + "|" +
-                        RootObject.fields.priority.name + "|" +
-                        string_started + "|" +
-                        worklog.author.displayName + "|" +
-                        worklog.timeSpentSeconds + "|" +
-                        comment + "|" +
+        //        DateTime date_started = (DateTime)worklog.started;
+        //        string string_started = date_started.ToString("dd/MM/yyyy HH:mm:ss");
 
-                        /*campos extras...*/
-                        worklog.timeSpent + "|" +
-                        string_created + "|" +
-                        string_updated + "|" +
-                        worklog.id + "|" +
-                        worklog.issueId
-                    );
-            }
-        }
+        //        DateTime date_created = (DateTime)worklog.created;
+        //        string string_created = date_created.ToString("dd/MM/yyyy HH:mm:ss");
+
+        //        DateTime date_updated = (DateTime)worklog.updated;
+        //        string string_updated = date_updated.ToString("dd/MM/yyyy HH:mm:ss");
+
+
+
+        //        // Format Datetime in different formats and display them
+        //        //Console.WriteLine(aDate.ToString("MM/dd/yyyy"));
+        //        //Console.WriteLine(aDate.ToString("dddd, dd MMMM yyyy"));
+        //        //Console.WriteLine(aDate.ToString("dddd, dd MMMM yyyy"));
+        //        //Console.WriteLine(aDate.ToString("dddd, dd MMMM yyyy"));
+        //        //Console.WriteLine(aDate.ToString("dddd, dd MMMM yyyy"));
+        //        //Console.WriteLine(aDate.ToString("dddd, dd MMMM yyyy"));
+        //        //Console.WriteLine(aDate.ToString("dddd, dd MMMM yyyy HH:mm:ss"));
+        //        //Console.WriteLine(aDate.ToString("MM/dd/yyyy HH:mm"));
+        //        //Console.WriteLine(aDate.ToString("MM/dd/yyyy hh:mm tt"));
+        //        //Console.WriteLine(aDate.ToString("MM/dd/yyyy H:mm"));
+        //        //Console.WriteLine(aDate.ToString("MM/dd/yyyy h:mm tt"));
+        //        //Console.WriteLine(aDate.ToString("MM/dd/yyyy HH:mm:ss"));
+        //        //Console.WriteLine(aDate.ToString("MMMM dd"));
+        //        //Console.WriteLine(aDate.ToString("yyyy’-‘MM’-‘dd’T’HH’:’mm’:’ss.fffffffK"));
+        //        //Console.WriteLine(aDate.ToString("ddd, dd MMM yyy HH’:’mm’:’ss ‘GMT’"));
+        //        //Console.WriteLine(aDate.ToString("yyyy’-‘MM’-‘dd’T’HH’:’mm’:’ss"));
+        //        //Console.WriteLine(aDate.ToString("HH:mm"));
+        //        //Console.WriteLine(aDate.ToString("hh:mm tt"));
+        //        //Console.WriteLine(aDate.ToString("H:mm"));
+        //        //Console.WriteLine(aDate.ToString("h:mm tt"));
+        //        //Console.WriteLine(aDate.ToString("HH:mm:ss"));
+        //        //Console.WriteLine(aDate.ToString("yyyy MMMM"));
+
+        //        //var worklog = await jiraConn.Issues.GetWorklogAsync(issuKey, wk.Id, token);   
+        //        if (worklog.id != null)
+        //            Utilidades.SaveFile(strPathFile,
+        //                RootObject.fields.project.key + "|" +
+        //                RootObject.key + "|" +
+        //                RootObject.fields.issuetype.name + "|" +
+        //                summary + "|" +
+        //                RootObject.fields.priority.name + "|" +
+        //                string_started + "|" +
+        //                worklog.author.displayName + "|" +
+        //                worklog.timeSpentSeconds + "|" +
+        //                comment + "|" +
+
+        //                /*campos extras...*/
+        //                worklog.timeSpent + "|" +
+        //                string_created + "|" +
+        //                string_updated + "|" +
+        //                worklog.id + "|" +
+        //                worklog.issueId
+        //            );
+        //    }
+        //}
         public async Task GetWorklogAsync(string project_key, string issue_key, string summary, string issuetype_name, string priority_name, int startAt = 0, int maxResults = 5000, int Descargado = 0)
         {
             try
@@ -3250,7 +3360,7 @@ namespace GotJira
                 var request = new RestRequest(Method.GET);
                 request.AddHeader("Host", "softoffice.atlassian.net");
                 request.AddHeader("Cache-Control", "no-cache");
-                request.AddHeader("Authorization", "Basic amlyYS5lbXhAZ21haWwuY29tOjVSNlIzVjhiM0hNR1ZmTXFSUUVqMTFDNQ==");
+                request.AddHeader("Authorization", $"Basic {authToken}");
                 IRestResponse response = await client.ExecuteAsync(request);
                 //Console.WriteLine(response.Content);
 
