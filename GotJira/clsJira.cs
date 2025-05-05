@@ -1143,11 +1143,24 @@ namespace GotJira
         {
             try
             {
-                DateTime fechaHoy = new DateTime();
-                fechaHoy = DateTime.Today.AddDays(-5); //Eliminaciones de horas desde hoy a 5 dias para atras. (estos 5 puede ser poco)
+                MParametros objParametro = new MParametros();
+                int DiasDesde = 0;
+                try
+                {
+                    DiasDesde = int.Parse(objParametro.ObtenerParametro("WorklogsEliminadoDiasDesde"));
+                }
+                catch 
+                {
+                    DiasDesde = 30;
+                }
+                
+                objParametro = null;
 
-                DateTime fecha = new DateTime(fechaHoy.Year, fechaHoy.Month, fechaHoy.Day, 0, 0, 0, DateTimeKind.Utc);
-                long FechaMiliSegundos = new DateTimeOffset(fecha).ToUnixTimeMilliseconds();
+                DateTime fechaDesde = new DateTime();
+                fechaDesde = DateTime.Today.AddDays(-DiasDesde); //Eliminaciones de horas desde hoy a XXX dias para atras.
+
+                DateTime fechaFiltrar = new DateTime(fechaDesde.Year, fechaDesde.Month, fechaDesde.Day, 0, 0, 0, DateTimeKind.Utc);
+                long FechaMiliSegundos = new DateTimeOffset(fechaFiltrar).ToUnixTimeMilliseconds();
                 //Console.WriteLine(FechaMiliSegundos);
 
                 await DeleteWorklogsAndHoursAsync(FechaMiliSegundos);
@@ -1199,7 +1212,7 @@ namespace GotJira
                         Desde = DateTime.Now; // .Today.AddDays(-7);
                         Hasta = DateTime.Now;
                     }
-                    else if(_TopeDiasJiras == -1) { //esto es solo para que no busque jiras, enlanes ni worklogs
+                    else if(_TopeDiasJiras == -1) { //esto es solo para que NO busque jiras, enlanes ni worklogs
                         Desde = DateTime.Today.AddDays(1); 
                         Hasta = DateTime.Today.AddDays(-1);
                     }                        
@@ -3476,7 +3489,7 @@ namespace GotJira
                 throw ex;
             }
         }
-        public static void SaveFile(string strFileName, string strTexto)
+        public static void SaveFileOLD(string strFileName, string strTexto)
         {
             try
 
@@ -3486,6 +3499,22 @@ namespace GotJira
                     writer.Write(strTexto + System.Environment.NewLine);
                 }
                 // File.AppendAllText(strFileName, strTexto + System.Environment.NewLine);                            
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static void SaveFile(string strFileName, string strTexto)
+        {
+            try
+            {
+                using (var fs = new FileStream(strFileName, FileMode.Append, FileAccess.Write, FileShare.ReadWrite))
+                using (var sw = new StreamWriter(fs))
+                {
+                    sw.WriteLine(strTexto);
+                }
             }
             catch (Exception ex)
             {
