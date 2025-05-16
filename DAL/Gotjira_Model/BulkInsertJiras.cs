@@ -11,67 +11,9 @@ namespace DAL
     {
         // Número de registros por cada bulk insert
         int batchSize = 5000;
-        public void LoadCsvToDataTableAndBulkInsert(string filePath)
+
+        public void DataTaleToBulkInsert(DataTable dataTable)
         {
-            // Step 1: Cargar el CSV en un DataTable
-            DataTable dataTable = new DataTable();
-
-            // Definir las columnas del DataTable según el archivo CSV
-            dataTable.Columns.Add("project", typeof(string));
-            dataTable.Columns.Add("_key", typeof(string));
-            dataTable.Columns.Add("issue_type", typeof(string));
-            dataTable.Columns.Add("sumary", typeof(string));
-            dataTable.Columns.Add("epic_link", typeof(string));
-            dataTable.Columns.Add("ga", typeof(string));
-            dataTable.Columns.Add("sprint", typeof(string));
-            dataTable.Columns.Add("parent_issue", typeof(string));
-            dataTable.Columns.Add("origen_error", typeof(string));
-            dataTable.Columns.Add("fase_detectado", typeof(string));
-            dataTable.Columns.Add("cliente", typeof(string));
-            dataTable.Columns.Add("status", typeof(string));
-            dataTable.Columns.Add("priority", typeof(string));
-            dataTable.Columns.Add("category", typeof(string));
-            dataTable.Columns.Add("project_custom", typeof(string));
-            dataTable.Columns.Add("horas_estimadas", typeof(string));
-            dataTable.Columns.Add("story_points", typeof(string));
-            dataTable.Columns.Add("feature", typeof(string));
-
-            // Leer el archivo CSV            
-            string[] allLines = File.ReadAllLines(filePath);
-
-            // Leer el archivo CSV
-            foreach (string line in allLines)
-            {
-                // Dividir la línea por comas
-                string[] values = line.Split('|');
-
-                // Crear una nueva fila en el DataTable
-                DataRow row = dataTable.NewRow();
-
-                row["project"] = values[0];
-                row["_key"] = values[1];
-                row["issue_type"] = values[2];
-                row["sumary"] = values[3];
-                row["epic_link"] = values[4];
-                row["ga"] = values[5];
-                row["sprint"] = values[6];
-                row["parent_issue"] = values[7];
-                row["origen_error"] = values[8];
-                row["fase_detectado"] = values[9];
-                row["cliente"] = values[10];
-                row["status"] = values[11];
-                row["priority"] = values[12];
-                row["category"] = values[13];
-                row["project_custom"] = values[14];
-                row["horas_estimadas"] = values[15];
-                row["story_points"] = values[16];
-                row["feature"] = values[17];
-
-                // Añadir la fila al DataTable
-                dataTable.Rows.Add(row);
-            }
-
-            // Step 2: Insertar los datos del DataTable en la base de datos usando SqlBulkCopy
             clsDatabaseCn con = new clsDatabaseCn();
             using (SqlConnection connection = con.Conectar())
             {
@@ -127,7 +69,7 @@ namespace DAL
                             // Insertar los datos en SQL Server
                             //bulkCopy.WriteToServer(dataTable);
                         }
-                        
+
                         transaction.Commit(); // Si todo va bien, se confirma la inserción
                     }
                     catch (Exception ex)
@@ -137,7 +79,7 @@ namespace DAL
                         throw ex;
                     }
                 }
-            }            
-        }        
+            }
+        }
     }
 }

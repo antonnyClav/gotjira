@@ -11,35 +11,8 @@ namespace DAL
     {
         // Número de registros por cada bulk insert
         int batchSize = 5000;
-        public void LoadCsvToDataTableAndBulkInsert(string filePath)
-        {
-            // Step 1: Cargar el CSV en un DataTable
-            DataTable dataTable = new DataTable();
-
-            // Definir las columnas del DataTable según el archivo CSV
-            dataTable.Columns.Add("key1", typeof(string));
-            dataTable.Columns.Add("key2", typeof(string));
-
-            // Leer el archivo CSV
-            string[] allLines = File.ReadAllLines(filePath);
-
-            // Leer el archivo CSV
-            foreach (string line in allLines)
-            {
-                // Dividir la línea por comas
-                string[] values = line.Split('|');
-
-                // Crear una nueva fila en el DataTable
-                DataRow row = dataTable.NewRow();
-
-                row["key1"] = values[0];
-                row["key2"] = values[1];
-
-                // Añadir la fila al DataTable
-                dataTable.Rows.Add(row);
-            }
-
-            // Step 2: Insertar los datos del DataTable en la base de datos usando SqlBulkCopy
+        public void DataTaleToBulkInsert(DataTable dataTable)
+        {          
             clsDatabaseCn con = new clsDatabaseCn();
             using (SqlConnection connection = con.Conectar())
             {
@@ -75,7 +48,7 @@ namespace DAL
                     // Insertar los datos en SQL Server
                     //bulkCopy.WriteToServer(dataTable);
                 }
-            }            
-        }        
+            }
+        }
     }
 }

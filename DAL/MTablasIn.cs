@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Text.RegularExpressions;
 using DAL.Model;
 using DBC;
 
@@ -36,6 +37,40 @@ namespace DAL
                 throw ex;
             }
         }
+
+        public void TruncateTabla(string tableName)
+        {
+            try
+            {
+                // Validar nombre de tabla: letras, números, guiones bajos, punto (para esquema.tabla)
+                if (!Regex.IsMatch(tableName, @"^[a-zA-Z0-9_\.]+$"))
+                {
+                    throw new ArgumentException("Nombre de tabla inválido.");
+                }
+
+                clsDatabaseCn con = new clsDatabaseCn();
+                using (SqlConnection cn = con.Conectar())
+                {
+
+                    string query = $"TRUNCATE TABLE {tableName}";
+
+                    using (SqlCommand cmd = new SqlCommand(query, cn))
+                    {
+                        cmd.CommandTimeout = 1800;
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    cn.Close();
+                }
+
+                con = null;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al truncar la tabla {tableName}: " + ex.Message, ex);
+            }
+        }
+
 
         public void LimpiarTablasIN()
         {

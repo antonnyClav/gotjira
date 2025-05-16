@@ -16,11 +16,18 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Data;
 
 namespace GotJira
 {
     public class clsJira
     {
+        DataTable dtJiras = new DataTable();
+        DataTable dtJirasAdic = new DataTable();
+        DataTable dtJirasAdicGDD = new DataTable();
+        DataTable dtWorkLogs = new DataTable();
+        DataTable dtLinkIssue = new DataTable();
+
         public delegate void work(string notificacion);
         //public event work Notificar;
 
@@ -330,24 +337,19 @@ namespace GotJira
 
             try
             {
+                MTablasIn objTablasIn = new MTablasIn();
+                objTablasIn.TruncateTabla("in_proyectos");
+                objTablasIn = null;
+
+                // Crear DataTable
+                DataTable dtProjects = new DataTable();
+                dtProjects.Columns.Add("categoria", typeof(string));
+                dtProjects.Columns.Add("nombre", typeof(string));
+                dtProjects.Columns.Add("_key", typeof(string));
+                dtProjects.Columns.Add("lider", typeof(string));
+
                 // Project project = await jiraConn.Projects.GetProjectAsync("BGP1038");
                 IEnumerable<Project> projects = await jiraConn.Projects.GetProjectsAsync();
-
-
-                MParametros objParametro = new MParametros();
-                string strPathFile = "";
-                strPathFile = objParametro.ObtenerParametro("Pathfiles");
-                strPathFile = strPathFile + "projects.txt";
-
-                objParametro = null;
-
-                //Notificar("Consultando Proyectos");
-                cantidad = projects.Count();
-                if (cantidad > 0)
-                {
-                    //File.Delete(strPathFile);
-                    File.WriteAllText(strPathFile, string.Empty);
-                }
 
                 foreach (Project proyecto in projects)
                 {
@@ -366,8 +368,8 @@ namespace GotJira
                         Category = "";
                     }
                     try
-                    {
-                        Utilidades.SaveFile(strPathFile, Category + "|" + proyecto.Name + "|" + proyecto.Key + "|" + proyecto.LeadUser.DisplayName); //project.Lead
+                    {                       
+                        dtProjects.Rows.Add(Category, proyecto.Name, proyecto.Key, proyecto.LeadUser.DisplayName);
                     }
                     catch (Exception ex)
                     {
@@ -376,16 +378,13 @@ namespace GotJira
                         throw ex;
                     }
                 }
-                //int resultado;
-                //MTablasIn objTablasIn = new MTablasIn();
-                //resultado = objTablasIn.Grabar_InProject();
-                ////Notificar("Proyectos Grabados...");
 
-                ////Notificar("Consultando Proyecto Por Componentes");
-                //await GetProjectForComponent();
-                ////Notificar("Proyecto Por Componentes Grabados");
-
-                //objTablasIn = null;
+                // Ejecutar el Bulk Insert
+                BulkInsertProjects bulk = new BulkInsertProjects();
+                bulk.DataTaleToBulkInsert(dtProjects);
+                bulk = null;
+                dtProjects.Clear();
+                dtProjects.Dispose();
 
                 return cantidad;
             }
@@ -413,7 +412,7 @@ namespace GotJira
             int diaActual = (int)Hoy.DayOfWeek;
             
             MTablasIn objTablasIn = new MTablasIn();
-            objTablasIn.LimpiarTablasIN();
+            //objTablasIn.LimpiarTablasIN();
 
             MParametros objParametro = new MParametros();
             
@@ -422,18 +421,18 @@ namespace GotJira
                 Utilidades.LogService("ActualizarDB(): INICIADO");
                 try
                 {
-                    string strPathFile = "";
-                    strPathFile = objParametro.ObtenerParametro("Pathfiles") + "projects.txt";
-                    BulkInsertProjects pry = new BulkInsertProjects();                    
-                    try
-                    {
-                        pry.LoadCsvToDataTableAndBulkInsert(strPathFile);
-                    }
-                    catch (Exception ex)
-                    {
-                        ex.Data.Clear();
-                    }
-                    pry = null;
+                    //string strPathFile = "";
+                    //strPathFile = objParametro.ObtenerParametro("Pathfiles") + "projects.txt";
+                    //BulkInsertProjects pry = new BulkInsertProjects();                    
+                    //try
+                    //{
+                    //    pry.LoadCsvToDataTableAndBulkInsert(strPathFile);
+                    //}
+                    //catch (Exception ex)
+                    //{
+                    //    ex.Data.Clear();
+                    //}
+                    //pry = null;
 
                     objTablasIn.Grabar_InProject();
                 }
@@ -447,18 +446,18 @@ namespace GotJira
 
                 try
                 {
-                    string strPathFile = "";
-                    strPathFile = objParametro.ObtenerParametro("Pathfiles") + "proyectos_x_componentes.txt";
-                    BulkInsertProjectsXComp pxc = new BulkInsertProjectsXComp();                    
-                    try
-                    {
-                        pxc.LoadCsvToDataTableAndBulkInsert(strPathFile);
-                    }
-                    catch (Exception ex)
-                    {
-                        ex.Data.Clear();
-                    }
-                    pxc = null;
+                    //string strPathFile = "";
+                    //strPathFile = objParametro.ObtenerParametro("Pathfiles") + "proyectos_x_componentes.txt";
+                    //BulkInsertProjectsXComp pxc = new BulkInsertProjectsXComp();                    
+                    //try
+                    //{
+                    //    pxc.LoadCsvToDataTableAndBulkInsert(strPathFile);
+                    //}
+                    //catch (Exception ex)
+                    //{
+                    //    ex.Data.Clear();
+                    //}
+                    //pxc = null;
 
                     objTablasIn.Grabar_InProyectosPorComponentes();
                 }
@@ -472,18 +471,18 @@ namespace GotJira
 
                 try
                 {
-                    string strPathFile = "";
-                    strPathFile = objParametro.ObtenerParametro("Pathfiles") + "usuarios.txt";
-                    BulkInsertUsuarios usu = new BulkInsertUsuarios();                    
-                    try
-                    {
-                        usu.LoadCsvToDataTableAndBulkInsert(strPathFile);
-                    }
-                    catch (Exception ex)
-                    {
-                        ex.Data.Clear();
-                    }
-                    usu = null;
+                    //string strPathFile = "";
+                    //strPathFile = objParametro.ObtenerParametro("Pathfiles") + "usuarios.txt";
+                    //BulkInsertUsuarios usu = new BulkInsertUsuarios();                    
+                    //try
+                    //{
+                    //    usu.LoadCsvToDataTableAndBulkInsert(strPathFile);
+                    //}
+                    //catch (Exception ex)
+                    //{
+                    //    ex.Data.Clear();
+                    //}
+                    //usu = null;
 
                     objTablasIn.Grabar_InUsuariosJira();
                 }
@@ -541,41 +540,41 @@ namespace GotJira
 
                 try
                 {
-                    string strPathFile = "";
-                    strPathFile = objParametro.ObtenerParametro("Pathfiles") + "jiras.txt";
-                    BulkInsertJiras jir = new BulkInsertJiras();                    
-                    try
-                    {
-                        jir.LoadCsvToDataTableAndBulkInsert(strPathFile);
-                    }
-                    catch (Exception ex)
-                    {
-                        ex.Data.Clear();
-                    }
-                    jir = null;
+                    //string strPathFile = "";
+                    //strPathFile = objParametro.ObtenerParametro("Pathfiles") + "jiras.txt";
+                    //BulkInsertJiras jir = new BulkInsertJiras();                    
+                    //try
+                    //{
+                    //    jir.LoadCsvToDataTableAndBulkInsert(strPathFile);
+                    //}
+                    //catch (Exception ex)
+                    //{
+                    //    ex.Data.Clear();
+                    //}
+                    //jir = null;
 
-                    strPathFile = objParametro.ObtenerParametro("Pathfiles") + "jiras_adic.txt";
-                    BulkInsertJirasAdic jirAdic = new BulkInsertJirasAdic();
-                    try
-                    {
-                        jirAdic.LoadCsvToDataTableAndBulkInsert(strPathFile);
-                    }
-                    catch(Exception ex){
-                        ex.Data.Clear();
-                    }                    
-                    jirAdic = null;
+                    //strPathFile = objParametro.ObtenerParametro("Pathfiles") + "jiras_adic.txt";
+                    //BulkInsertJirasAdic jirAdic = new BulkInsertJirasAdic();
+                    //try
+                    //{
+                    //    jirAdic.LoadCsvToDataTableAndBulkInsert(strPathFile);
+                    //}
+                    //catch(Exception ex){
+                    //    ex.Data.Clear();
+                    //}                    
+                    //jirAdic = null;
 
-                    strPathFile = objParametro.ObtenerParametro("Pathfiles") + "jiras_adic_gdd.txt";
-                    BulkInsertJirasAdicGDD jirAdicGDD = new BulkInsertJirasAdicGDD();
-                    try
-                    {
-                        jirAdicGDD.LoadCsvToDataTableAndBulkInsert(strPathFile);
-                    }
-                    catch (Exception ex)
-                    {
-                        ex.Data.Clear();
-                    }
-                    jirAdicGDD = null;
+                    //strPathFile = objParametro.ObtenerParametro("Pathfiles") + "jiras_adic_gdd.txt";
+                    //BulkInsertJirasAdicGDD jirAdicGDD = new BulkInsertJirasAdicGDD();
+                    //try
+                    //{
+                    //    jirAdicGDD.LoadCsvToDataTableAndBulkInsert(strPathFile);
+                    //}
+                    //catch (Exception ex)
+                    //{
+                    //    ex.Data.Clear();
+                    //}
+                    //jirAdicGDD = null;
 
                     objTablasIn.Grabar_InJiras(Desde, Hasta);
 
@@ -584,18 +583,18 @@ namespace GotJira
                     //--------------------------------------------------------------------------------------------------------
                     try
                     {
-                        strPathFile = objParametro.ObtenerParametro("Pathfiles") + "worklogs.txt";
-                        BulkInsertWorkLogs wrl = new BulkInsertWorkLogs();
+                        //strPathFile = objParametro.ObtenerParametro("Pathfiles") + "worklogs.txt";
+                        //BulkInsertWorkLogs wrl = new BulkInsertWorkLogs();
 
-                        try
-                        {
-                            wrl.LoadCsvToDataTableAndBulkInsert(strPathFile);
-                        }
-                        catch (Exception ex)
-                        {
-                            Utilidades.LogService("Error WorkLog: " + ex.Message);
-                        }
-                        wrl = null;
+                        //try
+                        //{
+                        //    wrl.LoadCsvToDataTableAndBulkInsert(strPathFile);
+                        //}
+                        //catch (Exception ex)
+                        //{
+                        //    Utilidades.LogService("Error WorkLog: " + ex.Message);
+                        //}
+                        //wrl = null;
 
                         string Mensaje = "";
                         Mensaje = objTablasIn.Grabar_InTimeSheet(Desde, Hasta);
@@ -642,17 +641,17 @@ namespace GotJira
                 try
                 {
                     string strPathFile = "";
-                    strPathFile = objParametro.ObtenerParametro("Pathfiles") + "enlaces.txt";
-                    BulkInsertLinks lnk = new BulkInsertLinks();                    
-                    try
-                    {
-                        lnk.LoadCsvToDataTableAndBulkInsert(strPathFile);
-                    }
-                    catch (Exception ex)
-                    {
-                        ex.Data.Clear();
-                    }
-                    lnk = null;
+                    //strPathFile = objParametro.ObtenerParametro("Pathfiles") + "enlaces.txt";
+                    //BulkInsertLinks lnk = new BulkInsertLinks();                    
+                    //try
+                    //{
+                    //    lnk.LoadCsvToDataTableAndBulkInsert(strPathFile);
+                    //}
+                    //catch (Exception ex)
+                    //{
+                    //    ex.Data.Clear();
+                    //}
+                    //lnk = null;
 
                     strPathFile = objParametro.ObtenerParametro("Pathfiles") + "minitoc.csv";
                     BulkInsertMinitoc mnt = new BulkInsertMinitoc();                    
@@ -1176,6 +1175,115 @@ namespace GotJira
         /// </summary>     
         public async Task<DateTime> GetIssuesLite()
         {
+            MTablasIn objTablasIn = new MTablasIn();
+            objTablasIn.TruncateTabla("in_jiras");
+            objTablasIn.TruncateTabla("in_jiras_adic");
+            objTablasIn.TruncateTabla("in_jiras_adic_gdd");
+            objTablasIn.TruncateTabla("in_worklogs");
+            objTablasIn.TruncateTabla("in_enlaces");
+
+            objTablasIn = null;
+
+            dtWorkLogs.Columns.Add("project_key", typeof(string));
+            dtWorkLogs.Columns.Add("issue_key", typeof(string));
+            dtWorkLogs.Columns.Add("issuetype", typeof(string));
+            dtWorkLogs.Columns.Add("summary", typeof(string));
+            dtWorkLogs.Columns.Add("priority_name", typeof(string));
+            dtWorkLogs.Columns.Add("started", typeof(string));
+            dtWorkLogs.Columns.Add("displayname", typeof(string));
+            dtWorkLogs.Columns.Add("timespentseconds", typeof(string));
+            dtWorkLogs.Columns.Add("comment", typeof(string));
+            dtWorkLogs.Columns.Add("timespent", typeof(string));
+            dtWorkLogs.Columns.Add("created", typeof(string));
+            dtWorkLogs.Columns.Add("updated", typeof(string));
+            dtWorkLogs.Columns.Add("id", typeof(string));
+            dtWorkLogs.Columns.Add("issueid", typeof(string));
+
+            dtJiras.Columns.Add("project", typeof(string));
+            dtJiras.Columns.Add("_key", typeof(string));
+            dtJiras.Columns.Add("issue_type", typeof(string));
+            dtJiras.Columns.Add("sumary", typeof(string));
+            dtJiras.Columns.Add("epic_link", typeof(string));
+            dtJiras.Columns.Add("ga", typeof(string));
+            dtJiras.Columns.Add("sprint", typeof(string));
+            dtJiras.Columns.Add("parent_issue", typeof(string));
+            dtJiras.Columns.Add("origen_error", typeof(string));
+            dtJiras.Columns.Add("fase_detectado", typeof(string));
+            dtJiras.Columns.Add("cliente", typeof(string));
+            dtJiras.Columns.Add("status", typeof(string));
+            dtJiras.Columns.Add("priority", typeof(string));
+            dtJiras.Columns.Add("category", typeof(string));
+            dtJiras.Columns.Add("project_custom", typeof(string));
+            dtJiras.Columns.Add("horas_estimadas", typeof(string));
+            dtJiras.Columns.Add("story_points", typeof(string));
+            dtJiras.Columns.Add("feature", typeof(string));
+
+            dtJirasAdic.Columns.Add("_key", typeof(string));
+            dtJirasAdic.Columns.Add("created", typeof(string));
+            dtJirasAdic.Columns.Add("updated", typeof(string));
+            dtJirasAdic.Columns.Add("resolutiondate", typeof(string));
+            dtJirasAdic.Columns.Add("lastViewed", typeof(string));
+            dtJirasAdic.Columns.Add("area_solicitante", typeof(string));
+            dtJirasAdic.Columns.Add("informador", typeof(string));
+            dtJirasAdic.Columns.Add("calificacion", typeof(string));
+            dtJirasAdic.Columns.Add("request_type", typeof(string));
+            dtJirasAdic.Columns.Add("sub_categoria", typeof(string));
+            dtJirasAdic.Columns.Add("assignee", typeof(string));
+            dtJirasAdic.Columns.Add("tipo_falla", typeof(string));
+            dtJirasAdic.Columns.Add("motivo_de_pendiente", typeof(string));
+            dtJirasAdic.Columns.Add("sla1", typeof(string));
+            dtJirasAdic.Columns.Add("sla2", typeof(string));
+            dtJirasAdic.Columns.Add("sla3", typeof(string));
+            dtJirasAdic.Columns.Add("sla4", typeof(string));
+            dtJirasAdic.Columns.Add("cliente", typeof(string));
+            dtJirasAdic.Columns.Add("origen", typeof(string));
+            dtJirasAdic.Columns.Add("producto", typeof(string));
+            dtJirasAdic.Columns.Add("nro_oportunidad", typeof(string));
+            dtJirasAdic.Columns.Add("tipo_soporte", typeof(string));
+            dtJirasAdic.Columns.Add("causa_raiz", typeof(string));
+            dtJirasAdic.Columns.Add("nivel_resolucion", typeof(string));
+            dtJirasAdic.Columns.Add("tipo_riesgo", typeof(string));
+            dtJirasAdic.Columns.Add("proceso_vinculado", typeof(string));
+            dtJirasAdic.Columns.Add("probabilidad", typeof(string));
+            dtJirasAdic.Columns.Add("impacto_ryo", typeof(string));
+            dtJirasAdic.Columns.Add("estrategia_ryo", typeof(string));
+            dtJirasAdic.Columns.Add("impacto", typeof(string));
+            dtJirasAdic.Columns.Add("influencia", typeof(string));
+            dtJirasAdic.Columns.Add("estrategia", typeof(string));
+            dtJirasAdic.Columns.Add("clasificacion_contexto", typeof(string));
+            dtJirasAdic.Columns.Add("origen2", typeof(string));
+            dtJirasAdic.Columns.Add("origen_hallazgo", typeof(string));
+            dtJirasAdic.Columns.Add("accion_correctiva_cuando", typeof(string));
+            dtJirasAdic.Columns.Add("fecha_verificacion_eficacia", typeof(string));
+            dtJirasAdic.Columns.Add("complejidad", typeof(string));
+            dtJirasAdic.Columns.Add("soporte_asignado_a", typeof(string));
+            dtJirasAdic.Columns.Add("resolutor", typeof(string));
+            dtJirasAdic.Columns.Add("ambiente", typeof(string));
+            dtJirasAdic.Columns.Add("entorno", typeof(string));
+            dtJirasAdic.Columns.Add("informacion_insuficiente", typeof(string));
+            dtJirasAdic.Columns.Add("priorizado_gdp", typeof(string));
+            dtJirasAdic.Columns.Add("indicar_si_es_core", typeof(string));
+            dtJirasAdic.Columns.Add("jira_control_interno", typeof(string));
+
+            dtJirasAdicGDD.Columns.Add("_key", typeof(string));
+            dtJirasAdicGDD.Columns.Add("componente", typeof(string));
+            dtJirasAdicGDD.Columns.Add("cliente", typeof(string));
+            dtJirasAdicGDD.Columns.Add("origen", typeof(string));
+            dtJirasAdicGDD.Columns.Add("equipo", typeof(string));
+            dtJirasAdicGDD.Columns.Add("facturable", typeof(string));
+            dtJirasAdicGDD.Columns.Add("producto", typeof(string));
+            dtJirasAdicGDD.Columns.Add("version", typeof(string));
+            dtJirasAdicGDD.Columns.Add("tipo", typeof(string));
+            dtJirasAdicGDD.Columns.Add("horas_estimadas", typeof(string));
+            dtJirasAdicGDD.Columns.Add("tipo_desarrollo", typeof(string));
+            dtJirasAdicGDD.Columns.Add("estado_desarrollo", typeof(string));
+            dtJirasAdicGDD.Columns.Add("fecha_requerida", typeof(string));
+            dtJirasAdicGDD.Columns.Add("fecha_estimacion", typeof(string));
+            dtJirasAdicGDD.Columns.Add("fecha_entrega", typeof(string));
+
+            dtLinkIssue.Columns.Add("key1", typeof(string));
+            dtLinkIssue.Columns.Add("key2", typeof(string));
+
             MParametros objParametro = new MParametros();
             int startAt = 0;
             int _TopeDiasJiras = 7;
@@ -1233,48 +1341,6 @@ namespace GotJira
 
             Utilidades.LogService("ISSUES DESDE: " + Desde.ToString("dd/M/yyyy", CultureInfo.InvariantCulture) + " HASTA: " + Hasta.ToString("dd/M/yyyy", CultureInfo.InvariantCulture));
 
-            string strPathFile = "";
-            string strPathFileEnlacesJira = "";
-            string strPathFileJira = "";
-            string strPathFileJiraAdic = "";
-            string strPathFileJiraAdicGdd = "";
-            string strPathFileWorkLogs = "";
-
-            strPathFile = objParametro.ObtenerParametro("Pathfiles");
-
-            strPathFileEnlacesJira = strPathFile + "enlaces.txt";
-            strPathFileJira = strPathFile + "jiras.txt";
-            strPathFileJiraAdic = strPathFile + "jiras_adic.txt";
-            strPathFileJiraAdicGdd = strPathFile + "jiras_adic_gdd.txt";
-            strPathFileWorkLogs = strPathFile + "worklogs.txt";
-
-            try
-            {
-
-                //File.Delete(strPathFileEnlacesJira);
-                File.WriteAllText(strPathFileEnlacesJira, string.Empty);
-
-                //File.Delete(strPathFileJira);
-                File.WriteAllText(strPathFileJira, string.Empty);
-
-                //File.Delete(strPathFileJiraAdic);
-                File.WriteAllText(strPathFileJiraAdic, string.Empty);
-
-                //File.Delete(strPathFileJiraAdicGdd);
-                File.WriteAllText(strPathFileJiraAdicGdd, string.Empty);
-
-                //File.Delete(strPathFileWorkLogs);
-                File.WriteAllText(strPathFileWorkLogs, string.Empty);
-
-            }
-            catch (Exception ex)
-            {
-                Utilidades.LogService("Error GetIssuesLite(): " + "ERROR, NO SE PUDO ELIMINAR ARCHIVOS " + " ERROR: " + ex.Message);
-                ex.Data.Clear();
-            }
-
-            //fecha_desde = DateTime.Parse(objParametro.ObtenerParametro("FecUltimaSinIssuesLite"));
-
             int Descargado = 0;
             int Total = 0;
             AddAtlassianGotJiraJirasLite.AddJiraLite issues = new AddAtlassianGotJiraJirasLite.AddJiraLite();
@@ -1294,6 +1360,42 @@ namespace GotJira
             }
 
             await GetIssuesImports();
+
+
+            // Ejecutar el Bulk Insert
+            BulkInsertJiras bulkJiras = new BulkInsertJiras();
+            bulkJiras.DataTaleToBulkInsert(dtJiras);
+            bulkJiras = null;
+            dtJiras.Clear();
+            dtJiras.Dispose();
+            
+            // Ejecutar el Bulk Insert
+            BulkInsertJirasAdic bulkJirasAdic = new BulkInsertJirasAdic();
+            bulkJirasAdic.DataTaleToBulkInsert(dtJirasAdic);
+            bulkJirasAdic = null;
+            dtJirasAdic.Clear();
+            dtJirasAdic.Dispose();
+
+            // Ejecutar el Bulk Insert
+            BulkInsertJirasAdicGDD bulkJirasAdicGDD = new BulkInsertJirasAdicGDD();
+            bulkJirasAdicGDD.DataTaleToBulkInsert(dtJirasAdicGDD);
+            bulkJirasAdicGDD = null;
+            dtJirasAdicGDD.Clear();
+            dtJirasAdicGDD.Dispose();
+            
+            // Ejecutar el Bulk Insert
+            BulkInsertLinks bulkLink = new BulkInsertLinks();
+            bulkLink.DataTaleToBulkInsert(dtLinkIssue);
+            bulkLink = null;
+            dtLinkIssue.Clear();
+            dtLinkIssue.Dispose();
+
+            // Ejecutar el Bulk Insert
+            BulkInsertWorkLogs bulkWorkLogs = new BulkInsertWorkLogs();
+            bulkWorkLogs.DataTaleToBulkInsert(dtWorkLogs);
+            bulkWorkLogs = null;
+            dtWorkLogs.Clear();
+            dtWorkLogs.Dispose();
 
             return Hasta;
         }
@@ -1366,7 +1468,7 @@ namespace GotJira
                     return fecha_actual;
                 }
 
-                MParametros objParametro = new MParametros();
+                //MParametros objParametro = new MParametros();
 
                 //---------------------------------------------- NUEVOS JIRAS ----------------------------------
                 //Notificar("Obteniendo Jiras...");
@@ -1412,7 +1514,7 @@ namespace GotJira
 
                 //Notificar("Jiras Grabados...");
 
-                objParametro = null;
+                //objParametro = null;
             }
             catch (Exception ex)
             {
@@ -1433,20 +1535,22 @@ namespace GotJira
 
         private void SaveIssueToFile(/*AddAtlassianGotJiraJiras.AddJira*/ AddAtlassianGotJiraJirasLite.Issue issue)
         {
+            
+
             //AddAtlassianGotJiraJiras.AddJira issue3 = new AddAtlassianGotJiraJiras.AddJira();
             //AddAtlassianGotJiraJirasLite.Issue issue4 = new AddAtlassianGotJiraJirasLite.Issue();                        
 
-            MParametros objParametro = new MParametros();
-            string strPathFile = "";
-            string strPathFileJira = "";
-            string strPathFileJiraAdic = "";
-            string strPathFileJiraAdicGdd = "";
+            //MParametros objParametro = new MParametros();
+            //string strPathFile = "";
+            //string strPathFileJira = "";
+            //string strPathFileJiraAdic = "";
+            //string strPathFileJiraAdicGdd = "";
 
-            strPathFile = objParametro.ObtenerParametro("Pathfiles");
+            //strPathFile = objParametro.ObtenerParametro("Pathfiles");
 
-            strPathFileJira = strPathFile + "jiras.txt";
-            strPathFileJiraAdic = strPathFile + "jiras_adic.txt";
-            strPathFileJiraAdicGdd = strPathFile + "jiras_adic_gdd.txt";
+            //strPathFileJira = strPathFile + "jiras.txt";
+            //strPathFileJiraAdic = strPathFile + "jiras_adic.txt";
+            //strPathFileJiraAdicGdd = strPathFile + "jiras_adic_gdd.txt";
 
             if (issue.key == null) return;
             string Grupo_De_Actividad = "";
@@ -2119,7 +2223,61 @@ namespace GotJira
                 Resolutiondate = issue?.fields?.resolutiondate;
                 LastViewed = issue?.fields?.lastViewed;
 
-                Utilidades.SaveFile(strPathFileJiraAdic, issue.key + "|" + Created + "|" + Updated + "|" + Resolutiondate + "|" + LastViewed + "|" + AreaSolicitante.Replace("|", "") + "|" + Informador + "|" + Calificacion.Replace("|", "") + "|" + TipoSolicitudMDA + "|" + CustomCategoria + "|" + Assignee + "|" + TipoFalla + "|" + MotivoDePendiente + "|" + SLA1 + "|" + SLA2 + "|" + SLA3 + "|" + SLA4 + "|" + Cliente + "|" + Origen2 + "|" + Producto + "|" + NroOportunidad + "|" + TipoSoporte + "|" + CausaRaiz + "|" + NivelResolucion + "|" + TipoRiesgo + "|" + ProcesoVinculado + "|" + Probabilidad + "|" + ImpactoRyo + "|" + EstrategiaRyo + "|" + Impacto + "|" + Influencia + "|" + Estrategia + "|" + ClasificacionContexto + "|" + Origen_2 + "|" + OrigenHallazgo + "|" + AccionCorrectivaCuando + "|" + FechaVerificacionEficacia + "|" + Complejidad + "|" + SoporteAsignadoA + "|" + Resolutor + "|" + Ambiente + "|" + Entorno + "|" + InformacionInsuficiente + "|" + PriorizadoGPD + "|" + IndicarSiEsCore + "|" + JiraControlInterno);
+                //Utilidades.SaveFile(strPathFileJiraAdic, issue.key + "|" + Created + "|" + Updated + "|" + Resolutiondate + "|" + LastViewed + "|" + AreaSolicitante.Replace("|", "") + "|" + Informador + "|" + Calificacion.Replace("|", "") + "|" + TipoSolicitudMDA + "|" + CustomCategoria + "|" + Assignee + "|" + TipoFalla + "|" + MotivoDePendiente + "|" + SLA1 + "|" + SLA2 + "|" + SLA3 + "|" + SLA4 + "|" + Cliente + "|" + Origen2 + "|" + Producto + "|" + NroOportunidad + "|" + TipoSoporte + "|" + CausaRaiz + "|" + NivelResolucion + "|" + TipoRiesgo + "|" + ProcesoVinculado + "|" + Probabilidad + "|" + ImpactoRyo + "|" + EstrategiaRyo + "|" + Impacto + "|" + Influencia + "|" + Estrategia + "|" + ClasificacionContexto + "|" + Origen_2 + "|" + OrigenHallazgo + "|" + AccionCorrectivaCuando + "|" + FechaVerificacionEficacia + "|" + Complejidad + "|" + SoporteAsignadoA + "|" + Resolutor + "|" + Ambiente + "|" + Entorno + "|" + InformacionInsuficiente + "|" + PriorizadoGPD + "|" + IndicarSiEsCore + "|" + JiraControlInterno);
+
+                DataRow rowJiraAdic = dtJirasAdic.NewRow();
+
+                rowJiraAdic["_key"] = issue.key;
+                rowJiraAdic["created"] = Created;
+                rowJiraAdic["updated"] = Updated;
+                rowJiraAdic["resolutiondate"] = Resolutiondate;
+                rowJiraAdic["lastViewed"] = LastViewed;
+                rowJiraAdic["area_solicitante"] = AreaSolicitante.Replace("|", "");
+                rowJiraAdic["informador"] = Informador;
+                rowJiraAdic["calificacion"] = Calificacion.Replace("|", "");
+                rowJiraAdic["request_type"] = TipoSolicitudMDA;
+                rowJiraAdic["sub_categoria"] = CustomCategoria;
+                rowJiraAdic["assignee"] = Assignee;
+                rowJiraAdic["tipo_falla"] = TipoFalla;
+                rowJiraAdic["motivo_de_pendiente"] = MotivoDePendiente;
+                rowJiraAdic["sla1"] = SLA1;
+                rowJiraAdic["sla2"] = SLA2;
+                rowJiraAdic["sla3"] = SLA3;
+                rowJiraAdic["sla4"] = SLA4;
+                rowJiraAdic["cliente"] = Cliente;
+                rowJiraAdic["origen"] = Origen2;
+                rowJiraAdic["producto"] = Producto;
+                rowJiraAdic["nro_oportunidad"] = NroOportunidad;
+                rowJiraAdic["tipo_soporte"] = TipoSoporte;
+                rowJiraAdic["causa_raiz"] = CausaRaiz;
+                rowJiraAdic["nivel_resolucion"] = NivelResolucion;
+                rowJiraAdic["tipo_riesgo"] = TipoRiesgo;
+                rowJiraAdic["proceso_vinculado"] = ProcesoVinculado;
+                rowJiraAdic["probabilidad"] = Probabilidad;
+                rowJiraAdic["impacto_ryo"] = ImpactoRyo;
+                rowJiraAdic["estrategia_ryo"] = EstrategiaRyo;
+                rowJiraAdic["impacto"] = Impacto;
+                rowJiraAdic["influencia"] = Influencia;
+                rowJiraAdic["estrategia"] = Estrategia;
+                rowJiraAdic["clasificacion_contexto"] = ClasificacionContexto;
+                rowJiraAdic["origen2"] = Origen_2;
+                rowJiraAdic["origen_hallazgo"] = OrigenHallazgo;
+                rowJiraAdic["accion_correctiva_cuando"] = AccionCorrectivaCuando;
+                rowJiraAdic["fecha_verificacion_eficacia"] = FechaVerificacionEficacia;
+                rowJiraAdic["complejidad"] = Complejidad;
+                rowJiraAdic["soporte_asignado_a"] = SoporteAsignadoA;
+                rowJiraAdic["resolutor"] = Resolutor;
+                rowJiraAdic["ambiente"] = Ambiente;
+                rowJiraAdic["entorno"] = Entorno;
+                rowJiraAdic["informacion_insuficiente"] = InformacionInsuficiente;
+                rowJiraAdic["priorizado_gdp"] = PriorizadoGPD;
+                rowJiraAdic["indicar_si_es_core"] = IndicarSiEsCore;
+                rowJiraAdic["jira_control_interno"] = JiraControlInterno;
+
+                // Añadir la fila al DataTable
+                dtJirasAdic.Rows.Add(rowJiraAdic);
+
+
             }
             catch (Exception F)
             {
@@ -2131,7 +2289,29 @@ namespace GotJira
                 //solo jiras para este proyecto
                 if (issue?.key?.Substring(0, 7) == "EMX3051")
                 {
-                    Utilidades.SaveFile(strPathFileJiraAdicGdd, issue.key + "|" + Componente + "|" + Cliente + "|" + Origen + "|" + Equipo + "|" + Facturable + "|" + Producto + "|" + Version + "|" + Tipo + "|" + HorasEstimadas + "|" + TipoDesarrollo + "|" + EstadoDesarrollo + "|" + FechaRequerida + "|" + FechaEstimacion + "|" + FechaEntrega);
+                    //Utilidades.SaveFile(strPathFileJiraAdicGdd, issue.key + "|" + Componente + "|" + Cliente + "|" + Origen + "|" + Equipo + "|" + Facturable + "|" + Producto + "|" + Version + "|" + Tipo + "|" + HorasEstimadas + "|" + TipoDesarrollo + "|" + EstadoDesarrollo + "|" + FechaRequerida + "|" + FechaEstimacion + "|" + FechaEntrega);
+                    DataRow rowJiraAdicGDD = dtJirasAdicGDD.NewRow();
+
+                    rowJiraAdicGDD["_key"] = issue.key;
+                    rowJiraAdicGDD["componente"] = Componente;
+                    rowJiraAdicGDD["cliente"] = Cliente;
+                    rowJiraAdicGDD["origen"] = Origen;
+                    rowJiraAdicGDD["equipo"] = Equipo;
+                    rowJiraAdicGDD["facturable"] = Facturable;
+                    rowJiraAdicGDD["producto"] = Producto;
+                    rowJiraAdicGDD["version"] = Version;
+                    rowJiraAdicGDD["tipo"] = Tipo;
+                    rowJiraAdicGDD["horas_estimadas"] = HorasEstimadas;
+                    rowJiraAdicGDD["tipo_desarrollo"] = TipoDesarrollo;
+                    rowJiraAdicGDD["estado_desarrollo"] = EstadoDesarrollo;
+                    rowJiraAdicGDD["fecha_requerida"] = FechaRequerida;
+                    rowJiraAdicGDD["fecha_estimacion"] = FechaEstimacion;
+                    rowJiraAdicGDD["fecha_entrega"] = FechaEntrega;
+
+                    // Añadir la fila al DataTable
+                    dtJirasAdicGDD.Rows.Add(rowJiraAdicGDD);
+
+
                 }
             }
             catch (Exception F)
@@ -2139,10 +2319,36 @@ namespace GotJira
                 F.Data.Clear();
             }
 
-            Utilidades.SaveFile(strPathFileJira, issue.fields.project.key + "|" + issue.key + "|" + issue.fields.issuetype.name
+            /*Utilidades.SaveFile(strPathFileJira, issue.fields.project.key + "|" + issue.key + "|" + issue.fields.issuetype.name
                     + "|" + issue.fields.summary.Replace("|", "").Trim() + "|" + Epic_Link.Replace("|", "") + "|" + Grupo_De_Actividad.Replace("|", "") + "|" + Sprint.Replace("|", "") + "|" + ParentIssueKey
                     + "|" + Origen_Del_Error.Replace("|", "") + "|" + Fase_Detectado.Replace("|", "") + "|" + Cliente.Replace("|", "") + "|" + issue.fields.status.name + "|" + Prioridad + "|" + Categoria.Replace("|", "") + "|" + Proyecto_custom.Replace("|", "")
-                    + "|" + HorasEstimadas + "|" + StoryPoints.Replace(",", ".") + "|" + Features.Replace("|", ""));
+                    + "|" + HorasEstimadas + "|" + StoryPoints.Replace(",", ".") + "|" + Features.Replace("|", ""));*/
+
+            DataRow rowJira = dtJiras.NewRow();
+
+            rowJira["project"] = issue.fields.project.key;
+            rowJira["_key"] = issue.key;
+            rowJira["issue_type"] = issue.fields.issuetype.name;
+            rowJira["sumary"] = issue.fields.summary.Replace("|", "").Trim();
+            rowJira["epic_link"] = Epic_Link.Replace("|", "");
+            rowJira["ga"] = Grupo_De_Actividad.Replace("|", "");
+            rowJira["sprint"] = Sprint.Replace("|", "");
+            rowJira["parent_issue"] = ParentIssueKey;
+            rowJira["origen_error"] = Origen_Del_Error.Replace("|", "");
+            rowJira["fase_detectado"] = Fase_Detectado.Replace("|", "");
+            rowJira["cliente"] = Cliente.Replace("|", "");
+            rowJira["status"] = issue.fields.status.name;
+            rowJira["priority"] = Prioridad;
+            rowJira["category"] = Categoria.Replace("|", "");
+            rowJira["project_custom"] = Proyecto_custom.Replace("|", "");
+            rowJira["horas_estimadas"] = HorasEstimadas;
+            rowJira["story_points"] = StoryPoints.Replace(",", ".");
+            rowJira["feature"] = Features.Replace("|", "");
+
+            // Añadir la fila al DataTable
+            dtJiras.Rows.Add(rowJira);
+
+
 
         }
         private bool EsHorarioValido(DateTime FecProximaEjec)
@@ -2317,12 +2523,9 @@ namespace GotJira
 
         private async Task GetLinkForIssue(string IssueKey)
         {
-            MParametros objParametro = new MParametros();
-            AddIssueLnk LxI = new AddIssueLnk();
 
-            string strPathFile = "";
-            strPathFile = objParametro.ObtenerParametro("Pathfiles");
-            strPathFile = strPathFile + "enlaces.txt";
+
+            AddIssueLnk LxI = new AddIssueLnk();
 
             try
             {
@@ -2346,13 +2549,15 @@ namespace GotJira
                     //Incidencias vinculadas
                     if (issuelinks?.inwardIssue != null)
                     {
-                        Utilidades.SaveFile(strPathFile, IssueKey.ToString() + "|" + issuelinks.inwardIssue.key);
+                        //Utilidades.SaveFile(strPathFile, IssueKey.ToString() + "|" + issuelinks.inwardIssue.key);
+                        dtLinkIssue.Rows.Add(IssueKey.ToString(), issuelinks.inwardIssue.key);
                     }
 
                     //otro jira enlaza a este jira
                     if (issuelinks?.outwardIssue != null)
                     {
-                        Utilidades.SaveFile(strPathFile, IssueKey.ToString() + "|" + issuelinks.outwardIssue.key);
+                        //Utilidades.SaveFile(strPathFile, IssueKey.ToString() + "|" + issuelinks.outwardIssue.key);
+                        dtLinkIssue.Rows.Add(IssueKey.ToString(), issuelinks.outwardIssue.key);
                     }
                 }
                 //subtareas que tiene el jira
@@ -2360,17 +2565,22 @@ namespace GotJira
                 {
                     if (subTaks?.fields != null)
                     {
-                        Utilidades.SaveFile(strPathFile, LxI.key + "|" + subTaks.key);
+                        //Utilidades.SaveFile(strPathFile, LxI.key + "|" + subTaks.key);
+                        dtLinkIssue.Rows.Add(LxI.key, subTaks.key);
                     }
                 }
 
                 //padre del jira
                 if (LxI.fields.parent != null)
                 {
-                    Utilidades.SaveFile(strPathFile, LxI.fields.parent.key + "|" + IssueKey.ToString());
+                    //Utilidades.SaveFile(strPathFile, LxI.fields.parent.key + "|" + IssueKey.ToString());
+                    dtLinkIssue.Rows.Add(LxI.fields.parent.key, IssueKey.ToString());
                 }
 
                 LxI = null;
+
+
+                
             }
             catch (Exception ex)
             {
@@ -2378,7 +2588,7 @@ namespace GotJira
                 ex.Data.Clear();
             }
 
-            objParametro = null;
+            //objParametro = null;
         }
 
         //private async Task GetLinkForIssues(List<string> IssueKeys)
@@ -2451,34 +2661,26 @@ namespace GotJira
         {
             try
             {
-                MParametros objParametro = new MParametros();
+                MTablasIn objTablasIn = new MTablasIn();
+                objTablasIn.TruncateTabla("in_usuarios");
+                objTablasIn = null;
 
-                string strPathFile = "";
-                string strPathFileUsers2 = "";
-                strPathFile = objParametro.ObtenerParametro("Pathfiles");
-                strPathFile = strPathFile + "usuarios.txt";
+                DataTable dtUsuarios = new DataTable();
 
-                strPathFileUsers2 = objParametro.ObtenerParametro("Pathfiles");
-                strPathFileUsers2 = strPathFileUsers2 + "usuariosAD.txt";
+                // Definir las columnas del DataTable según el archivo CSV
+                dtUsuarios.Columns.Add("displayname", typeof(string));
+                dtUsuarios.Columns.Add("email", typeof(string));
+                dtUsuarios.Columns.Add("username", typeof(string));
+                dtUsuarios.Columns.Add("isActive", typeof(string));
+                dtUsuarios.Columns.Add("accountId", typeof(string));
 
                 IEnumerable<JiraUser> _JiraUser = new List<JiraUser>();
 
                 _JiraUser = await SearchAllUsersAsync(JiraUserStatus.Active, 1000, 0);
 
-                if (_JiraUser.Count() != 0)
-                {
-                    //File.Delete(strPathFile);
-                    File.WriteAllText(strPathFile, string.Empty);
-                    //File.Delete(strPathFileUsers2);
-                    File.WriteAllText(strPathFileUsers2, string.Empty);
-                }
-
                 Active_Directory ad = new Active_Directory();
                 List<Active_Directory.UserAD> usersAD = new List<Active_Directory.UserAD>();
                 usersAD = ad.GetADUsers();
-
-                //Active_Directory.UserAD user3 = new Active_Directory.UserAD();
-                //user3 = ad.GetADUsers().Where(x => x.DisplayName == "usuario_buscar").First();
 
                 bool encontrado = false;
                 string _EmailAD = "";
@@ -2504,7 +2706,7 @@ namespace GotJira
                     else
                         _UsrAD = UsrAD.UserName;
 
-                    Utilidades.SaveFile(strPathFileUsers2, _DisplayNameAD + "|" + _EmailAD + "|" + _UsrAD);
+                    //Utilidades.SaveFile(strPathFileUsers2, _DisplayNameAD + "|" + _EmailAD + "|" + _UsrAD);
                 }
 
                 string acount_id = "";
@@ -2549,22 +2751,26 @@ namespace GotJira
 
                         if ((_DisplayNameJira + " - emerix" == _DisplayNameAD) || (_DisplayNameJira == _DisplayNameAD) || (EstaEnJira) || (EstaEnAd) || (EsUsuarioCorrecto))
                         {
-                            Utilidades.SaveFile(strPathFile, jira_user.DisplayName + "|" + _EmailAD + "|" + _UsrAD + "|" + (jira_user.IsActive == true ? 1 : 0) + "|" + acount_id);
+                            dtUsuarios.Rows.Add(jira_user.DisplayName, _EmailAD, _UsrAD, (jira_user.IsActive == true ? 1 : 0), acount_id);
                             encontrado = true;
                             break;
                         }
                     }
                     if (!encontrado)
                     {
-                        Utilidades.SaveFile(strPathFile, jira_user.DisplayName + "|" + jira_user.Email + "|" + jira_user.Username + "|" + (jira_user.IsActive == true ? 1 : 0) + "|" + acount_id);
+                        dtUsuarios.Rows.Add(jira_user.DisplayName, jira_user.Email, jira_user.Username, (jira_user.IsActive == true ? 1 : 0), acount_id);
                     }
                     encontrado = false;
                 }
-                //MTablasIn objTablasIn = new MTablasIn();
-                //objTablasIn.Grabar_InUsuariosJira();
-                //objTablasIn = null;
-                objParametro = null;
+
                 ad = null;
+
+                // Ejecutar el Bulk Insert
+                BulkInsertUsuarios bulk = new BulkInsertUsuarios();
+                bulk.DataTaleToBulkInsert(dtUsuarios);
+                bulk = null;
+                dtUsuarios.Clear();
+                dtUsuarios.Dispose();
 
             }
             catch (Exception ex)
@@ -3085,27 +3291,28 @@ namespace GotJira
         public async Task<int> GetProjectForComponent(string ProjectKey = "")
         {
             int cantidad = 0;
-            MParametros objParametro = new MParametros();
-            string strPathFile = "";
-            strPathFile = objParametro.ObtenerParametro("Pathfiles");
-            strPathFile = strPathFile + "proyectos_x_componentes.txt";
-            //File.Delete(strPathFile);                                                        
-            File.WriteAllText(strPathFile, string.Empty);
-
             try
             {
-                //FILTRAMOS UN PROYECTO EN PARTICULAR
-                if (ProjectKey != "")
+                MTablasIn objTablasIn = new MTablasIn();
+                objTablasIn.TruncateTabla("in_proyectos_x_componentes");
+                objTablasIn = null;
+
+                // Crear DataTable
+                DataTable dtProjectsXComponents = new DataTable();
+                dtProjectsXComponents.Columns.Add("project", typeof(string));
+                dtProjectsXComponents.Columns.Add("componente", typeof(string));
+
+                IEnumerable<Project> projects = new List<Project>();
+                projects = await jiraConn.Projects.GetProjectsAsync();
+                foreach (Project proy in projects)
                 {
-                    CancellationToken token = default(CancellationToken);
-                    Project project = await jiraConn.Projects.GetProjectAsync(ProjectKey, token);
                     try
                     {
-                        IEnumerable<ProjectComponent> proyComp = await jiraConn.Components.GetComponentsAsync(project.Key);
+                        IEnumerable<ProjectComponent> proyComp = await jiraConn.Components.GetComponentsAsync(proy.Key);
 
                         foreach (ProjectComponent pxc in proyComp)
                         {
-                            Utilidades.SaveFile(strPathFile, pxc.ProjectKey + "|" + pxc.Name);
+                            dtProjectsXComponents.Rows.Add(pxc.ProjectKey, pxc.Name);
                             cantidad++;
                         }
                     }
@@ -3114,32 +3321,12 @@ namespace GotJira
                         ex.Data.Clear();
                     }
                 }
-                else
-                {
-                    IEnumerable<Project> projects = new List<Project>();
-                    projects = await jiraConn.Projects.GetProjectsAsync();
-                    foreach (Project proy in projects)
-                    {
-                        try
-                        {
-                            IEnumerable<ProjectComponent> proyComp = await jiraConn.Components.GetComponentsAsync(proy.Key);
 
-                            foreach (ProjectComponent pxc in proyComp)
-                            {
-                                Utilidades.SaveFile(strPathFile, pxc.ProjectKey + "|" + pxc.Name);
-                                cantidad++;
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            ex.Data.Clear();
-                        }
-                    }
-                }
-                //MTablasIn objTablasIn = new MTablasIn();
-                //objTablasIn.Grabar_InProyectosPorComponentes();
-                //objTablasIn = null;
-                //objParametro = null;
+                BulkInsertProjectsXComp bulk = new BulkInsertProjectsXComp();
+                bulk.DataTaleToBulkInsert(dtProjectsXComponents);
+                bulk = null;
+                dtProjectsXComponents.Clear();
+                dtProjectsXComponents.Dispose();
             }
             catch (Exception ex)
             {
@@ -3241,9 +3428,6 @@ namespace GotJira
                 int tmpstartAt = 0;
                 int tmpmaxResults = 0;
                 MParametros objParametro = new MParametros();
-                string strPathFile = "";
-                strPathFile = objParametro.ObtenerParametro("Pathfiles");
-                strPathFile = strPathFile + "worklogs.txt";
                 CancellationToken token = default(CancellationToken);
 
                 //--------------------------------------------------------------------------------------------------------------
@@ -3312,24 +3496,45 @@ namespace GotJira
                     string string_updated = date_updated.ToString("dd/MM/yyyy HH:mm:ss");
 
                     if (worklog.id != null)
-                        Utilidades.SaveFile(strPathFile,
-                            project_key + "|" +
-                            issue_key + "|" +
-                            issuetype_name + "|" +
-                            Regex.Replace(summary ?? "", @"\r\n|\r|\n", "").Replace("|", "-") + "|" + // SI VIENE ALGUN PIPE LO REEMPLAZO POR UN GUION Y SACO LOS ENTERS
-                            priority_name + "|" +
-                            string_started + "|" +
-                            worklog.author.displayName + "|" +
-                            worklog.timeSpentSeconds + "|" +
-                            Regex.Replace(comment ?? "", @"\r\n|\r|\n", "").Replace("|", "-") + "|" + // SI VIENE ALGUN PIPE LO REEMPLAZO POR UN GUION Y SACO LOS ENTERS
+                    { 
+                        //Utilidades.SaveFile(strPathFile,
+                        //    project_key + "|" +
+                        //    issue_key + "|" +
+                        //    issuetype_name + "|" +
+                        //    Regex.Replace(summary ?? "", @"\r\n|\r|\n", "").Replace("|", "-") + "|" + // SI VIENE ALGUN PIPE LO REEMPLAZO POR UN GUION Y SACO LOS ENTERS
+                        //    priority_name + "|" +
+                        //    string_started + "|" +
+                        //    worklog.author.displayName + "|" +
+                        //    worklog.timeSpentSeconds + "|" +
+                        //    Regex.Replace(comment ?? "", @"\r\n|\r|\n", "").Replace("|", "-") + "|" + // SI VIENE ALGUN PIPE LO REEMPLAZO POR UN GUION Y SACO LOS ENTERS
 
-                            /*campos extras...*/
-                            worklog.timeSpent + "|" +
-                            string_created + "|" +
-                            string_updated + "|" +
-                            worklog.id + "|" +
-                            worklog.issueId
-                        );
+                        //    /*campos extras...*/
+                        //    worklog.timeSpent + "|" +
+                        //    string_created + "|" +
+                        //    string_updated + "|" +
+                        //    worklog.id + "|" +
+                        //    worklog.issueId
+                        //);
+
+                        DataRow row = dtWorkLogs.NewRow();
+
+                        row["project_key"] = project_key;
+                        row["issue_key"] = issue_key;
+                        row["issuetype"] = issuetype_name;
+                        row["summary"] = Regex.Replace(summary ?? "", @"\r\n|\r|\n", "").Replace("|", "-"); // SI VIENE ALGUN PIPE LO REEMPLAZO POR UN GUION Y SACO LOS ENTERS
+                        row["priority_name"] = priority_name;
+                        row["started"] = string_started;
+                        row["displayname"] = worklog.author.displayName;
+                        row["timespentseconds"] = worklog.timeSpentSeconds;
+                        row["comment"] = Regex.Replace(comment ?? "", @"\r\n|\r|\n", "").Replace("|", "-"); // SI VIENE ALGUN PIPE LO REEMPLAZO POR UN GUION Y SACO LOS ENTERS
+                        row["timespent"] = worklog.timeSpent;
+                        row["created"] = string_created;
+                        row["updated"] = string_updated;
+                        row["id"] = worklog.id;
+                        row["issueid"] = worklog.issueId;
+
+                        dtWorkLogs.Rows.Add(row);
+                    }
                 }
 
                 if (tmpstartAt > 0)
@@ -3361,10 +3566,7 @@ namespace GotJira
                 int tmpstartAt = 0;
                 int tmpmaxResults = 0;
                 MParametros objParametro = new MParametros();
-                string strPathFile = "";
-                strPathFile = objParametro.ObtenerParametro("Pathfiles");
-                strPathFile = strPathFile + "worklogs.txt";
-                
+                  
                 string resource = "";
                 resource = String.Format("https://softoffice.atlassian.net/rest/api/3/issue/{0}/worklog?startAt={1}&maxResults={2}", issue_key, startAt, maxResults);
 
@@ -3437,25 +3639,46 @@ namespace GotJira
                     DateTime date_updated = (DateTime)worklog.updated;
                     string string_updated = date_updated.ToString("dd/MM/yyyy HH:mm:ss");
 
-                    if (worklog.id != null)
-                        Utilidades.SaveFile(strPathFile,
-                            project_key + "|" +
-                            issue_key + "|" +
-                            issuetype_name + "|" +
-                            Regex.Replace(summary ?? "", @"\r\n|\r|\n", "").Replace("|", "-") + "|" + // SI VIENE ALGUN PIPE LO REEMPLAZO POR UN GUION
-                            priority_name + "|" +
-                            string_started + "|" +
-                            worklog.author.displayName + "|" +
-                            worklog.timeSpentSeconds + "|" +
-                            Regex.Replace(comment ?? "", @"\r\n|\r|\n", "").Replace("|", "-") + "|" + // SI VIENE ALGUN PIPE LO REEMPLAZO POR UN GUION
+                    if (worklog.id != null) { 
+                        //Utilidades.SaveFile(strPathFile,
+                        //    project_key + "|" +
+                        //    issue_key + "|" +
+                        //    issuetype_name + "|" +
+                        //    Regex.Replace(summary ?? "", @"\r\n|\r|\n", "").Replace("|", "-") + "|" + // SI VIENE ALGUN PIPE LO REEMPLAZO POR UN GUION
+                        //    priority_name + "|" +
+                        //    string_started + "|" +
+                        //    worklog.author.displayName + "|" +
+                        //    worklog.timeSpentSeconds + "|" +
+                        //    Regex.Replace(comment ?? "", @"\r\n|\r|\n", "").Replace("|", "-") + "|" + // SI VIENE ALGUN PIPE LO REEMPLAZO POR UN GUION
 
-                            /*campos extras...*/
-                            worklog.timeSpent + "|" +
-                            string_created + "|" +
-                            string_updated + "|" +
-                            worklog.id + "|" +
-                            worklog.issueId
-                        );
+                        //    /*campos extras...*/
+                        //    worklog.timeSpent + "|" +
+                        //    string_created + "|" +
+                        //    string_updated + "|" +
+                        //    worklog.id + "|" +
+                        //    worklog.issueId
+                        //);
+
+
+                        DataRow row = dtWorkLogs.NewRow();
+
+                        row["project_key"] = project_key;
+                        row["issue_key"] = issue_key;
+                        row["issuetype"] = issuetype_name;
+                        row["summary"] = Regex.Replace(summary ?? "", @"\r\n|\r|\n", "").Replace("|", "-"); // SI VIENE ALGUN PIPE LO REEMPLAZO POR UN GUION Y SACO LOS ENTERS
+                        row["priority_name"] = priority_name;
+                        row["started"] = string_started;
+                        row["displayname"] = worklog.author.displayName;
+                        row["timespentseconds"] = worklog.timeSpentSeconds;
+                        row["comment"] = Regex.Replace(comment ?? "", @"\r\n|\r|\n", "").Replace("|", "-"); // SI VIENE ALGUN PIPE LO REEMPLAZO POR UN GUION Y SACO LOS ENTERS
+                        row["timespent"] = worklog.timeSpent;
+                        row["created"] = string_created;
+                        row["updated"] = string_updated;
+                        row["id"] = worklog.id;
+                        row["issueid"] = worklog.issueId;
+
+                        dtWorkLogs.Rows.Add(row);
+                   }
                 }
 
                 if (tmpstartAt > 0)

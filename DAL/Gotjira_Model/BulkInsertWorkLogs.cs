@@ -11,60 +11,8 @@ namespace DAL
     {
         // Número de registros por cada bulk insert
         int batchSize = 5000;
-
-        public void LoadCsvToDataTableAndBulkInsert(string filePath)
+        public void DataTaleToBulkInsert(DataTable dataTable)
         {
-            // Step 1: Cargar el CSV en un DataTable
-            DataTable dataTable = new DataTable();
-
-            // Definir las columnas del DataTable según el archivo CSV
-            dataTable.Columns.Add("project_key", typeof(string));
-            dataTable.Columns.Add("issue_key", typeof(string));
-            dataTable.Columns.Add("issuetype", typeof(string));
-            dataTable.Columns.Add("summary", typeof(string));
-            dataTable.Columns.Add("priority_name", typeof(string));
-            dataTable.Columns.Add("started", typeof(string));
-            dataTable.Columns.Add("displayname", typeof(string));
-            dataTable.Columns.Add("timespentseconds", typeof(string));
-            dataTable.Columns.Add("comment", typeof(string));
-            dataTable.Columns.Add("timespent", typeof(string));
-            dataTable.Columns.Add("created", typeof(string));
-            dataTable.Columns.Add("updated", typeof(string));
-            dataTable.Columns.Add("id", typeof(string));
-            dataTable.Columns.Add("issueid", typeof(string));
-
-            // Leer el archivo CSV
-            string[] allLines = File.ReadAllLines(filePath);
-
-            // Leer el archivo CSV
-            foreach (string line in allLines)
-            {
-                // Dividir la línea por comas
-                string[] values = line.Split('|');
-
-                // Crear una nueva fila en el DataTable
-                DataRow row = dataTable.NewRow();
-
-                row["project_key"] = values[0];
-                row["issue_key"] = values[1];
-                row["issuetype"] = values[2];
-                row["summary"] = values[3];
-                row["priority_name"] = values[4];
-                row["started"] = values[5];
-                row["displayname"] = values[6];
-                row["timespentseconds"] = values[7];
-                row["comment"] = values[8];
-                row["timespent"] = values[9];
-                row["created"] = values[10];
-                row["updated"] = values[11];
-                row["id"] = values[12];
-                row["issueid"] = values[13];
-
-                // Añadir la fila al DataTable
-                dataTable.Rows.Add(row);
-            }
-
-            // Step 2: Insertar los datos del DataTable en la base de datos usando SqlBulkCopy
             clsDatabaseCn con = new clsDatabaseCn();
             using (SqlConnection connection = con.Conectar())
             {
@@ -72,7 +20,7 @@ namespace DAL
                 {
                     try
                     {
-                        using (SqlBulkCopy bulkCopy = new SqlBulkCopy(connection,SqlBulkCopyOptions.Default, transaction))
+                        using (SqlBulkCopy bulkCopy = new SqlBulkCopy(connection, SqlBulkCopyOptions.Default, transaction))
                         {
                             bulkCopy.DestinationTableName = "dbo.in_worklogs"; // Nombre de la tabla de destino
 
@@ -117,7 +65,7 @@ namespace DAL
                             // Insertar los datos en SQL Server
                             //bulkCopy.WriteToServer(dataTable);
                         }
-                        
+
                         transaction.Commit(); // Si todo va bien, se confirma la inserción
                     }
                     catch (Exception ex)
@@ -125,9 +73,9 @@ namespace DAL
                         transaction.Rollback(); // Si hay error, deshacer todo
                         Console.WriteLine($"WorkLogs Error SqlBulkCopy: {ex.Message}");
                         throw ex;
-                    }                    
+                    }
                 }
             }
-        }       
+        }
     }
 }

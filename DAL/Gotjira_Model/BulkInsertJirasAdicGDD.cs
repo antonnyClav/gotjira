@@ -11,61 +11,9 @@ namespace DAL
     {
         // Número de registros por cada bulk insert
         int batchSize = 5000;
-        public void LoadCsvToDataTableAndBulkInsert(string filePath)
-        {
-            // Step 1: Cargar el CSV en un DataTable
-            DataTable dataTable = new DataTable();
 
-            // Definir las columnas del DataTable según el archivo CSV
-            dataTable.Columns.Add("_key", typeof(string));
-            dataTable.Columns.Add("componente", typeof(string));
-            dataTable.Columns.Add("cliente", typeof(string));
-            dataTable.Columns.Add("origen", typeof(string));
-            dataTable.Columns.Add("equipo", typeof(string));
-            dataTable.Columns.Add("facturable", typeof(string));
-            dataTable.Columns.Add("producto", typeof(string));
-            dataTable.Columns.Add("version", typeof(string));
-            dataTable.Columns.Add("tipo", typeof(string));
-            dataTable.Columns.Add("horas_estimadas", typeof(string));
-            dataTable.Columns.Add("tipo_desarrollo", typeof(string));
-            dataTable.Columns.Add("estado_desarrollo", typeof(string));
-            dataTable.Columns.Add("fecha_requerida", typeof(string));
-            dataTable.Columns.Add("fecha_estimacion", typeof(string));
-            dataTable.Columns.Add("fecha_entrega", typeof(string));
-
-            // Leer el archivo CSV
-            string[] allLines = File.ReadAllLines(filePath);
-
-            // Leer el archivo CSV
-            foreach (string line in allLines)
-            {
-                // Dividir la línea por comas
-                string[] values = line.Split('|');
-
-                // Crear una nueva fila en el DataTable
-                DataRow row = dataTable.NewRow();
-
-                row["_key"] = values[0];
-                row["componente"] = values[1];
-                row["cliente"] = values[2];
-                row["origen"] = values[3];
-                row["equipo"] = values[4];
-                row["facturable"] = values[5];
-                row["producto"] = values[6];
-                row["version"] = values[7];
-                row["tipo"] = values[8];
-                row["horas_estimadas"] = values[9];
-                row["tipo_desarrollo"] = values[10];
-                row["estado_desarrollo"] = values[11];
-                row["fecha_requerida"] = values[12];
-                row["fecha_estimacion"] = values[13];
-                row["fecha_entrega"] = values[14];
-
-                // Añadir la fila al DataTable
-                dataTable.Rows.Add(row);
-            }
-
-            // Step 2: Insertar los datos del DataTable en la base de datos usando SqlBulkCopy
+        public void DataTaleToBulkInsert(DataTable dataTable)
+        {                    
             clsDatabaseCn con = new clsDatabaseCn();
             using (SqlConnection connection = con.Conectar())
             {
@@ -114,7 +62,8 @@ namespace DAL
                     // Insertar los datos en SQL Server
                     //bulkCopy.WriteToServer(dataTable);
                 }
-            }            
+            }
         }
     }
+
 }
