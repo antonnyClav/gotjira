@@ -15,7 +15,7 @@ namespace DAL
 
             using (SqlConnection connection = con.Conectar())
             {
-                //// Paso 3: Limpiar la tabla
+                // Paso 3: Limpiar la tabla
                 //using (SqlCommand deleteCommand = new SqlCommand("TRUNCATE TABLE dbo.in_proyectos", connection))
                 //{
                 //    deleteCommand.ExecuteNonQuery();
@@ -35,9 +35,6 @@ namespace DAL
                     bulkCopy.WriteToServer(dataTable);
                 }
             }
-
-            dataTable.Clear();
-            dataTable.Dispose();
         }
     }
 }

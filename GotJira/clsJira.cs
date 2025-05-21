@@ -421,19 +421,7 @@ namespace GotJira
                 Utilidades.LogService("ActualizarDB(): INICIADO");
                 try
                 {
-                    //string strPathFile = "";
-                    //strPathFile = objParametro.ObtenerParametro("Pathfiles") + "projects.txt";
-                    //BulkInsertProjects pry = new BulkInsertProjects();                    
-                    //try
-                    //{
-                    //    pry.LoadCsvToDataTableAndBulkInsert(strPathFile);
-                    //}
-                    //catch (Exception ex)
-                    //{
-                    //    ex.Data.Clear();
-                    //}
-                    //pry = null;
-
+                    //hasta aca la tabla In deberia estar cargada.
                     objTablasIn.Grabar_InProject();
                 }
                 catch (Exception F)
@@ -446,19 +434,6 @@ namespace GotJira
 
                 try
                 {
-                    //string strPathFile = "";
-                    //strPathFile = objParametro.ObtenerParametro("Pathfiles") + "proyectos_x_componentes.txt";
-                    //BulkInsertProjectsXComp pxc = new BulkInsertProjectsXComp();                    
-                    //try
-                    //{
-                    //    pxc.LoadCsvToDataTableAndBulkInsert(strPathFile);
-                    //}
-                    //catch (Exception ex)
-                    //{
-                    //    ex.Data.Clear();
-                    //}
-                    //pxc = null;
-
                     objTablasIn.Grabar_InProyectosPorComponentes();
                 }
                 catch (Exception F)
@@ -471,19 +446,7 @@ namespace GotJira
 
                 try
                 {
-                    //string strPathFile = "";
-                    //strPathFile = objParametro.ObtenerParametro("Pathfiles") + "usuarios.txt";
-                    //BulkInsertUsuarios usu = new BulkInsertUsuarios();                    
-                    //try
-                    //{
-                    //    usu.LoadCsvToDataTableAndBulkInsert(strPathFile);
-                    //}
-                    //catch (Exception ex)
-                    //{
-                    //    ex.Data.Clear();
-                    //}
-                    //usu = null;
-
+                    //hasta aca la tabla In deberia estar cargada.
                     objTablasIn.Grabar_InUsuariosJira();
                 }
                 catch (Exception F)
@@ -540,42 +503,7 @@ namespace GotJira
 
                 try
                 {
-                    //string strPathFile = "";
-                    //strPathFile = objParametro.ObtenerParametro("Pathfiles") + "jiras.txt";
-                    //BulkInsertJiras jir = new BulkInsertJiras();                    
-                    //try
-                    //{
-                    //    jir.LoadCsvToDataTableAndBulkInsert(strPathFile);
-                    //}
-                    //catch (Exception ex)
-                    //{
-                    //    ex.Data.Clear();
-                    //}
-                    //jir = null;
-
-                    //strPathFile = objParametro.ObtenerParametro("Pathfiles") + "jiras_adic.txt";
-                    //BulkInsertJirasAdic jirAdic = new BulkInsertJirasAdic();
-                    //try
-                    //{
-                    //    jirAdic.LoadCsvToDataTableAndBulkInsert(strPathFile);
-                    //}
-                    //catch(Exception ex){
-                    //    ex.Data.Clear();
-                    //}                    
-                    //jirAdic = null;
-
-                    //strPathFile = objParametro.ObtenerParametro("Pathfiles") + "jiras_adic_gdd.txt";
-                    //BulkInsertJirasAdicGDD jirAdicGDD = new BulkInsertJirasAdicGDD();
-                    //try
-                    //{
-                    //    jirAdicGDD.LoadCsvToDataTableAndBulkInsert(strPathFile);
-                    //}
-                    //catch (Exception ex)
-                    //{
-                    //    ex.Data.Clear();
-                    //}
-                    //jirAdicGDD = null;
-
+                    //hasta aca la tabla In deberia estar cargada.
                     objTablasIn.Grabar_InJiras(Desde, Hasta);
 
                     //--------------------------------------------------------------------------------------------------------
@@ -583,19 +511,7 @@ namespace GotJira
                     //--------------------------------------------------------------------------------------------------------
                     try
                     {
-                        //strPathFile = objParametro.ObtenerParametro("Pathfiles") + "worklogs.txt";
-                        //BulkInsertWorkLogs wrl = new BulkInsertWorkLogs();
-
-                        //try
-                        //{
-                        //    wrl.LoadCsvToDataTableAndBulkInsert(strPathFile);
-                        //}
-                        //catch (Exception ex)
-                        //{
-                        //    Utilidades.LogService("Error WorkLog: " + ex.Message);
-                        //}
-                        //wrl = null;
-
+                        //hasta aca la tabla In deberia estar cargada.
                         string Mensaje = "";
                         Mensaje = objTablasIn.Grabar_InTimeSheet(Desde, Hasta);
 
@@ -640,31 +556,7 @@ namespace GotJira
                 //los enlaces corre todos los dias
                 try
                 {
-                    string strPathFile = "";
-                    //strPathFile = objParametro.ObtenerParametro("Pathfiles") + "enlaces.txt";
-                    //BulkInsertLinks lnk = new BulkInsertLinks();                    
-                    //try
-                    //{
-                    //    lnk.LoadCsvToDataTableAndBulkInsert(strPathFile);
-                    //}
-                    //catch (Exception ex)
-                    //{
-                    //    ex.Data.Clear();
-                    //}
-                    //lnk = null;
-
-                    strPathFile = objParametro.ObtenerParametro("Pathfiles") + "minitoc.csv";
-                    BulkInsertMinitoc mnt = new BulkInsertMinitoc();                    
-                    try
-                    {
-                        mnt.LoadCsvToDataTableAndBulkInsert(strPathFile);                        
-                    }
-                    catch (Exception ex)
-                    {
-                        ex.Data.Clear();
-                    }
-                    mnt = null;
-
+                    //hasta aca la tabla In deberia estar cargada.
                     objTablasIn.Grabar_InEnlaces();
                 }
                 catch (Exception F)
@@ -1167,7 +1059,7 @@ namespace GotJira
             catch (Exception ex)
             {
                 throw ex;
-            }            
+            }
         }
 
         /// <summary>
@@ -1397,6 +1289,8 @@ namespace GotJira
             dtWorkLogs.Clear();
             dtWorkLogs.Dispose();
 
+            await Task.Run(() => Utilidades.LogService("Error GetIssuesAndLinksAndWorkLogs() FIN"));
+
             return Hasta;
         }
 
@@ -1529,7 +1423,6 @@ namespace GotJira
                 string metodo = frame.GetMethod().Name;
                 await Task.Run(() => Utilidades.LogService("Error GetIssuesLite() Clase: " + clase + " Método(): " + metodo + " Linea: " + line + " Error: " + ex.Message));
             }
-
             return fecha_actual;
         }
 

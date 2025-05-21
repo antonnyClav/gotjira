@@ -71,31 +71,6 @@ namespace DAL
             }
         }
 
-
-        public void LimpiarTablasIN()
-        {
-            try
-            {
-                clsDatabaseCn con = new clsDatabaseCn();
-                using (SqlConnection cn = con.Conectar())
-                {
-                    SqlCommand cmd = new SqlCommand("gj_truncate_tablas_in", cn);
-                    cmd.CommandTimeout = 1800;
-                    cmd.CommandType = CommandType.StoredProcedure;
-
-                    cmd.ExecuteNonQuery();                                       
-
-                    cmd.Connection.Close();
-                    cmd = null;
-                    cn.Close();
-                }
-                con = null;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }            
-        }
         public string Grabar_InTimeSheet(DateTime Desde, DateTime Hasta)
         {
             try

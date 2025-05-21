@@ -44,7 +44,6 @@
     <Compile Include="Gotjira_Model\BulkInsertJirasAdicGDD.cs" />
     <Compile Include="Gotjira_Model\BulkInsertJirasAdic.cs" />
     <Compile Include="Gotjira_Model\BulkInsertJiras.cs" />
-    <Compile Include="Gotjira_Model\BulkInsertMinitoc.cs" />
     <Compile Include="Gotjira_Model\BulkInsertLinks.cs" />
     <Compile Include="Gotjira_Model\BulkInsertUsuarios.cs" />
     <Compile Include="Gotjira_Model\BulkInsertProjectsXComp.cs" />

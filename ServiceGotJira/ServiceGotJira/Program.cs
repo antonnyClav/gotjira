@@ -20,6 +20,9 @@ namespace AddAtlassianGotJiraJiras
                 x.SetServiceName("WinServiceGotJira");
                 x.SetDisplayName("Servicio GotJira");
                 x.SetDescription("Actualización Jira y TimeSheet (<GotJira>)");
+
+                // ESTA LÍNEA HACE QUE EL SERVICIO SE INICIE AUTOMÁTICAMENTE CON RETRASO
+                x.StartAutomaticallyDelayed();
             });
 
             int exitCoreValue = (int)Convert.ChangeType(exitCode, exitCode.GetTypeCode());

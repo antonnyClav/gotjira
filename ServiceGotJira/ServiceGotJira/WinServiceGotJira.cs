@@ -19,10 +19,13 @@ namespace AddAtlassianGotJiraJiras
         public WinServiceGotJira() {
             try
             {
+                Task.Delay(Minuto * 2).Wait(); //espero 2 minutos antes de lanzar la primera ejecucion
+
                 _timer = new Timer(Segundo * 10) { AutoReset = true };
                 _timer.Elapsed += TimerElapsed;
                 _timer.Enabled = true;
 
+                WriteToEventLog("Constructor WinServiceGotJira ejecutado correctamente a las " + DateTime.Now);
             }
             catch (Exception ex)
             {
@@ -90,10 +93,12 @@ namespace AddAtlassianGotJiraJiras
             }                                   
         }
         public void Start() {
+            WriteToEventLog("Servicio WinServiceGotJira Iniciado correctamente a las: " + DateTime.Now + " ->");
             _timer.Start();
         }
         public void Stop()
         {
+            WriteToEventLog("Servicio WinServiceGotJira Stopeado correctamente a las: " + DateTime.Now + " ->");
             _timer.Stop();
             //try
             //{
