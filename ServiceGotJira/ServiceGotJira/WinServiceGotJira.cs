@@ -19,9 +19,9 @@ namespace AddAtlassianGotJiraJiras
         public WinServiceGotJira() {
             try
             {
-                Task.Delay(Minuto * 2).Wait(); //espero 2 minutos antes de lanzar la primera ejecucion
+                //Task.Delay(Minuto * 1).Wait(); //espero 1 minutos antes de lanzar la primera ejecucion
 
-                _timer = new Timer(Segundo * 10) { AutoReset = true };
+                _timer = new Timer(Minuto * 1) { AutoReset = true };
                 _timer.Elapsed += TimerElapsed;
                 _timer.Enabled = true;
 

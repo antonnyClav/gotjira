@@ -80,7 +80,7 @@ namespace GotJira
             }
         }
         // HORA QUE ARRANCA EL SERVICIO
-        private int HoraDesde
+        private string HoraDesde
         {
             get
             {
@@ -91,16 +91,16 @@ namespace GotJira
                     int diaActual = (int)datetime.DayOfWeek;
                     if (diaActual != 5)
                     { // L A J /* esta en (6), antes corria los sabados, pero ahora se apagan los servers, todo lo que era sabado se paso a viernes */
-                        return int.Parse(objParametro.ObtenerParametro("HoraSincDesde"));
+                        return objParametro.ObtenerParametro("HoraSincDesde");
                     }
                     else
                     {
-                        return int.Parse(objParametro.ObtenerParametro("HoraSincDesdeOFF"));
+                        return objParametro.ObtenerParametro("HoraSincDesdeOFF");
                     }
                 }
                 catch
                 {
-                    return 8;
+                    return "08:30";
                 }
                 finally
                 {
@@ -109,7 +109,7 @@ namespace GotJira
             }
         }
         // HORA EN QUE FINALIZA EL SERVICIO
-        private int HoraHasta
+        private string HoraHasta
         {
             get
             {
@@ -120,16 +120,16 @@ namespace GotJira
                     int diaActual = (int)datetime.DayOfWeek;
                     if (diaActual != 5)
                     { // L A J /* esta en (6), antes corria los sabados, pero ahora se apagan los servers, todo lo que era sabado se paso a viernes */
-                        return int.Parse(objParametro.ObtenerParametro("HoraSincHasta"));
+                        return objParametro.ObtenerParametro("HoraSincHasta");
                     }
                     else
                     {
-                        return int.Parse(objParametro.ObtenerParametro("HoraSincHastaOFF"));
+                        return objParametro.ObtenerParametro("HoraSincHastaOFF");
                     }
                 }
                 catch
                 {
-                    return 22;
+                    return "23:00";
                 }
                 finally
                 {
@@ -139,22 +139,29 @@ namespace GotJira
         }
 
         // HORARIO VALIDO, SI ES FALSE TODOS LOS METODOS SALEN POR RETURN
-        public bool HorarioValido
+        public bool HorarioValido2
         {
-            // SABER SI ES HORARIO VALIDO PARA EJECUTAR EL SERVICIO DE LUNES A SABADOS
-            get
-            {
+          get
+          {
                 bool retHorarioValido = false;
 
-                DateTime datetime = DateTime.Now;
+                DateTime ahora = DateTime.Now;
 
-                int HoraDesde = this.HoraDesde;
-                int HoraHasta = this.HoraHasta;
+                // Rango horario válido: desde 08:30 hasta 23:00
+                TimeSpan horaDesde = TimeSpan.Parse(this.HoraDesde);
+                TimeSpan horaHasta = TimeSpan.Parse(this.HoraHasta);
 
-                int horaActual = datetime.Hour;
-                int diaActual = (int)datetime.DayOfWeek;
+                // Día de la semana actual
+                DayOfWeek dia = ahora.DayOfWeek;
 
-                retHorarioValido = (horaActual >= HoraDesde && horaActual <= HoraHasta && diaActual > 0 && diaActual <= 5); /* esta en (6), antes corria los sabados, pero ahora se apagan los servers, todo lo que era sabado se paso a viernes */
+                // Validamos si el día está entre lunes (1) y viernes (5)
+                bool esDiaHabil = dia >= DayOfWeek.Monday && dia <= DayOfWeek.Friday;
+
+                // Validamos si la hora actual está dentro del rango
+                TimeSpan horaActual = ahora.TimeOfDay;
+                bool estaEnHorario = horaActual >= horaDesde && horaActual <= horaHasta;
+
+                retHorarioValido = esDiaHabil && estaEnHorario;
 
                 if (!retHorarioValido)
                 {
@@ -162,8 +169,46 @@ namespace GotJira
                 }
 
                 return retHorarioValido;
-                // quitar               
-                //return true;
+            }
+        }
+
+        public bool HorarioValido
+        {
+            get
+            {
+                bool retHorarioValido = false;
+
+                try
+                {
+                    DateTime ahora = DateTime.Now;
+                    TimeSpan horaActual = ahora.TimeOfDay;
+
+                    // Día de la semana actual (Lunes = 1, Domingo = 0)
+                    DayOfWeek dia = ahora.DayOfWeek;
+                    bool esDiaHabil = dia >= DayOfWeek.Monday && dia <= DayOfWeek.Friday;
+
+                    // Validar formato de HoraDesde y HoraHasta
+                    if (TimeSpan.TryParse(this.HoraDesde, out TimeSpan horaDesde) &&
+                        TimeSpan.TryParse(this.HoraHasta, out TimeSpan horaHasta))
+                    {
+                        // Verificar si la hora actual está dentro del rango definido
+                        bool estaEnHorario = horaActual >= horaDesde && horaActual <= horaHasta;
+
+                        retHorarioValido = esDiaHabil && estaEnHorario;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Registrar o manejar error si fuera necesario
+                    Utilidades.LogService("Error en HorarioValido: " + ex.Message);
+                }
+
+                if (!retHorarioValido)
+                {
+                    GrabarProximaEjecucion();
+                }
+
+                return retHorarioValido;
             }
         }
 
@@ -2246,17 +2291,21 @@ namespace GotJira
         }
         private bool EsHorarioValido(DateTime FecProximaEjec)
         {
-            // SABER SI ES HORARIO VALIDO PARA EJECUTAR EL SERVICIO DE LUNES A SABADOS
-            DateTime datetime = FecProximaEjec;
+            // Rango horario válido: desde 08:30 hasta 23:00
+            TimeSpan horaDesde = TimeSpan.Parse(this.HoraDesde); // Ej: "08:30"
+            TimeSpan horaHasta = TimeSpan.Parse(this.HoraHasta); // Ej: "23:00"
 
-            int HoraDesde = this.HoraDesde;
-            int HoraHasta = this.HoraHasta;
+            // Hora y día de la fecha a validar
+            TimeSpan horaActual = FecProximaEjec.TimeOfDay;
+            DayOfWeek diaActual = FecProximaEjec.DayOfWeek;
 
-            int horaActual = datetime.Hour;
-            int diaActual = (int)datetime.DayOfWeek;
+            // Días válidos: lunes (1) a viernes (5)
+            bool esDiaHabil = diaActual >= DayOfWeek.Monday && diaActual <= DayOfWeek.Friday;
+            bool estaEnHorario = horaActual >= horaDesde && horaActual <= horaHasta;
 
-            return horaActual >= HoraDesde && horaActual <= HoraHasta && diaActual > 0 && diaActual <= 5; /* esta en (6), antes corria los sabados, pero ahora se apagan los servers, todo lo que era sabado se paso a viernes */
+            return esDiaHabil && estaEnHorario;
         }
+
 
         private string Formating(int valor)
         {
